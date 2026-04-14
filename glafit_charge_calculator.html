@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>glafit 充電代金計算</title>
+  <style>
+    :root {
+      --bg: #eef5fb;
+      --panel: #ffffff;
+      --line: #d7e2ee;
+      --text: #1d2840;
+      --muted: #5d6d86;
+      --brand: #0c6a5e;
+      --accent: #1b4f9d;
+      --shadow: 0 18px 44px rgba(14, 28, 52, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background:
+        radial-gradient(900px 340px at 100% -10%, #daf5ef 0%, transparent 68%),
+        radial-gradient(900px 340px at 0% 110%, #dbe8fb 0%, transparent 68%),
+        var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(920px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 28px 28px 18px;
+      background: linear-gradient(135deg, #f8fcff 0%, #edf6ff 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #daf3ee;
+      color: var(--brand);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.25;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0;
+    }
+
+    .form-area,
+    .result-area {
+      padding: 24px 28px 28px;
+    }
+
+    .form-area {
+      border-right: 1px solid var(--line);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    select {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      font-size: 15px;
+      padding: 0 14px;
+      outline: none;
+    }
+
+    .assumptions {
+      margin-top: 8px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .assumptions h2,
+    .result-area h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: var(--accent);
+    }
+
+    .assumptions ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .assumptions li {
+      margin-bottom: 6px;
+    }
+
+    .periods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .period-btn {
+      appearance: none;
+      border: 1px solid #cbdaf0;
+      background: #f6f9ff;
+      color: var(--accent);
+      border-radius: 12px;
+      height: 44px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 120ms ease, background-color 120ms ease, color 120ms ease;
+    }
+
+    .period-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .period-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .result-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .result-label {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .result-value {
+      margin: 0 0 14px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
+      font-weight: 800;
+      color: var(--brand);
+    }
+
+    .summary {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--line);
+      font-size: 13px;
+    }
+
+    .summary-row span:last-child {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .calc-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 860px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .form-area {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <span class="eyebrow">glafit NFR-01 Pro</span>
+      <h1>充電代金計算ページ</h1>
+      <p>電気単価、台数、1台あたりの平均フル充電回数を選ぶと、1日・1週・1か月ごとの充電代金を計算できます。</p>
+    </section>
+
+    <section class="content">
+      <div class="form-area">
+        <div class="field">
+          <label for="unitPrice">電気単価（円 / kWh）</label>
+          <select id="unitPrice"></select>
+        </div>
+
+        <div class="field">
+          <label for="bikeCount">台数</label>
+          <select id="bikeCount"></select>
+        </div>
+
+        <div class="field">
+          <label for="chargeCount">1台あたりの平均フル充電回数（回 / 日）</label>
+          <select id="chargeCount"></select>
+        </div>
+
+        <div class="assumptions">
+          <h2>計算条件</h2>
+          <ul>
+            <li>バッテリー容量: 48V × 9.6Ah = 460.8Wh = 0.4608kWh</li>
+            <li>充電効率: 0.90</li>
+            <li>実際の購入電力量 = 0.4608 ÷ 0.90 = 0.512kWh / 回</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="result-area">
+        <h2>結果表示</h2>
+        <div class="periods">
+          <button class="period-btn active" data-period="day" type="button">1日あたり</button>
+          <button class="period-btn" data-period="week" type="button">1週あたり</button>
+          <button class="period-btn" data-period="month" type="button">1か月あたり</button>
+        </div>
+
+        <div class="result-card">
+          <p class="result-label" id="resultLabel">1日あたりの充電代金</p>
+          <p class="result-value" id="resultValue">0円</p>
+
+          <div class="summary">
+            <div class="summary-row">
+              <span>1回あたり購入電力量</span>
+              <span id="energyPerCharge">0.512kWh</span>
+            </div>
+            <div class="summary-row">
+              <span>1日あたり総充電回数</span>
+              <span id="totalChargesPerDay">0回</span>
+            </div>
+            <div class="summary-row">
+              <span>1日あたり使用電力量</span>
+              <span id="energyPerDay">0kWh</span>
+            </div>
+            <div class="summary-row">
+              <span>選択中の期間係数</span>
+              <span id="periodFactor">1日分</span>
+            </div>
+          </div>
+
+          <p class="calc-note">
+            月額は30日換算です。必要であれば31日換算や実績ベース換算に変更できます。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const BATTERY_KWH = 0.4608;
+    const CHARGE_EFFICIENCY = 0.90;
+    const PURCHASED_KWH_PER_CHARGE = BATTERY_KWH / CHARGE_EFFICIENCY;
+
+    const periods = {
+      day: { label: "1日あたりの充電代金", factor: 1, factorLabel: "1日分" },
+      week: { label: "1週あたりの充電代金", factor: 7, factorLabel: "7日分" },
+      month: { label: "1か月あたりの充電代金", factor: 30, factorLabel: "30日分" }
+    };
+
+    const unitPriceSelect = document.getElementById("unitPrice");
+    const bikeCountSelect = document.getElementById("bikeCount");
+    const chargeCountSelect = document.getElementById("chargeCount");
+    const resultLabel = document.getElementById("resultLabel");
+    const resultValue = document.getElementById("resultValue");
+    const energyPerCharge = document.getElementById("energyPerCharge");
+    const totalChargesPerDay = document.getElementById("totalChargesPerDay");
+    const energyPerDay = document.getElementById("energyPerDay");
+    const periodFactor = document.getElementById("periodFactor");
+    const periodButtons = Array.from(document.querySelectorAll(".period-btn"));
+
+    let selectedPeriod = "day";
+
+    function appendOption(select, value, label) {
+      const option = document.createElement("option");
+      option.value = String(value);
+      option.textContent = label;
+      select.appendChild(option);
+    }
+
+    function buildOptions() {
+      for (let price = 20; price <= 45; price += 5) {
+        appendOption(unitPriceSelect, price, `${price}円 / kWh`);
+      }
+
+      for (let count = 1; count <= 8; count += 1) {
+        appendOption(bikeCountSelect, count, `${count}台`);
+      }
+
+      for (let charge = 0.5; charge <= 1.0001; charge += 0.1) {
+        const rounded = Number(charge.toFixed(1));
+        appendOption(chargeCountSelect, rounded, `${rounded.toFixed(1)}回 / 日`);
+      }
+
+      unitPriceSelect.value = "30";
+      bikeCountSelect.value = "4";
+      chargeCountSelect.value = "0.8";
+    }
+
+    function formatYen(value) {
+      return `${Math.round(value).toLocaleString("ja-JP")}円`;
+    }
+
+    function formatKwh(value) {
+      return `${value.toFixed(3)}kWh`;
+    }
+
+    function updateResult() {
+      const unitPrice = Number(unitPriceSelect.value);
+      const bikeCount = Number(bikeCountSelect.value);
+      const chargeCount = Number(chargeCountSelect.value);
+      const period = periods[selectedPeriod];
+
+      const chargesPerDay = bikeCount * chargeCount;
+      const kwhPerDay = chargesPerDay * PURCHASED_KWH_PER_CHARGE;
+      const costPerDay = kwhPerDay * unitPrice;
+      const periodCost = costPerDay * period.factor;
+
+      resultLabel.textContent = period.label;
+      resultValue.textContent = formatYen(periodCost);
+      energyPerCharge.textContent = formatKwh(PURCHASED_KWH_PER_CHARGE);
+      totalChargesPerDay.textContent = `${chargesPerDay.toFixed(1)}回`;
+      energyPerDay.textContent = formatKwh(kwhPerDay);
+      periodFactor.textContent = period.factorLabel;
+    }
+
+    function bindEvents() {
+      [unitPriceSelect, bikeCountSelect, chargeCountSelect].forEach((select) => {
+        select.addEventListener("change", updateResult);
+      });
+
+      periodButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedPeriod = button.dataset.period;
+          periodButtons.forEach((btn) => btn.classList.toggle("active", btn === button));
+          updateResult();
+        });
+      });
+    }
+
+    buildOptions();
+    bindEvents();
+    updateResult();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1693 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>助成金CRM ダッシュボード</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --bg-soft: #fbf8f2;
+      --panel: rgba(255, 255, 255, 0.94);
+      --panel-strong: #ffffff;
+      --line: rgba(83, 68, 45, 0.12);
+      --line-strong: rgba(83, 68, 45, 0.2);
+      --text: #2f261b;
+      --muted: #726556;
+      --accent: #8f6a33;
+      --accent-strong: #6e4f24;
+      --accent-soft: rgba(143, 106, 51, 0.1);
+      --danger: #b95a5a;
+      --success: #5f9678;
+      --shadow: 0 24px 60px rgba(84, 68, 45, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background:
+        radial-gradient(900px 380px at 100% -10%, rgba(143, 106, 51, 0.12), transparent 65%),
+        radial-gradient(900px 420px at -10% 110%, rgba(188, 170, 138, 0.12), transparent 65%),
+        linear-gradient(180deg, #f8f5ef 0%, #f0ebe2 100%);
+      line-height: 1.5;
+    }
+
+    .app {
+      width: min(1480px, calc(100% - 28px));
+      margin: 14px auto 28px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      padding: 26px 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      background:
+        linear-gradient(135deg, rgba(143, 106, 51, 0.12), rgba(255, 255, 255, 0.75)),
+        rgba(255, 255, 255, 0.96);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(183, 154, 98, 0.28);
+      background: rgba(143, 106, 51, 0.08);
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    h1 {
+      margin: 14px 0 8px;
+      font-size: clamp(28px, 3.5vw, 40px);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero-side {
+      min-width: 240px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-note {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(248, 244, 236, 0.92);
+      border: 1px solid var(--line);
+    }
+
+    .hero-note strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent-strong);
+      font-size: 13px;
+    }
+
+    .hero-note span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .section {
+      padding: 22px 24px 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+      color: var(--accent-strong);
+      letter-spacing: 0.02em;
+    }
+
+    .section-subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .kpis {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .kpi-value {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .kpi-value.accent {
+      color: var(--accent-strong);
+    }
+
+    .toolbar-grid,
+    .form-grid,
+    .chart-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .toolbar-grid {
+      grid-template-columns: 2fr repeat(3, minmax(0, 1fr)) auto;
+      align-items: end;
+    }
+
+    .chart-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      align-items: end;
+    }
+
+    .form-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-4 { grid-column: span 4; }
+
+    label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+      outline: none;
+      transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(143, 106, 51, 0.45);
+      box-shadow: 0 0 0 4px rgba(143, 106, 51, 0.1);
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .field-hint,
+    .legend-note,
+    .empty-state {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      min-height: 48px;
+      align-items: center;
+    }
+
+    .radio-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .radio-pill input {
+      width: auto;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    button {
+      appearance: none;
+      height: 44px;
+      padding: 0 16px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 120ms ease, opacity 120ms ease, background-color 120ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #b48b4e, #8f6a33);
+      color: #fffdf8;
+    }
+
+    .secondary {
+      background: #fffdf9;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .danger {
+      background: rgba(185, 90, 90, 0.08);
+      color: #9f3f3f;
+      border-color: rgba(201, 110, 110, 0.3);
+    }
+
+    .chart-shell {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px 16px 10px;
+      background: rgba(255, 252, 247, 0.96);
+    }
+
+    .chart-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .chart-total {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .chart-total strong {
+      color: var(--accent-strong);
+      font-size: 22px;
+      margin-left: 8px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 320px;
+      display: block;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1600px;
+    }
+
+    th,
+    td {
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      font-size: 13px;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #f5efe6;
+      color: var(--accent-strong);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    td.wrap {
+      white-space: normal;
+      min-width: 220px;
+    }
+
+    tr:hover td {
+      background: rgba(143, 106, 51, 0.05);
+    }
+
+    .status-chip,
+    .confidence-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      background: rgba(143, 106, 51, 0.06);
+      font-size: 12px;
+    }
+
+    .status-chip {
+      color: var(--text);
+    }
+
+    .confidence-chip {
+      color: var(--accent-strong);
+      border-color: rgba(143, 106, 51, 0.24);
+      background: rgba(143, 106, 51, 0.09);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .record-row {
+      cursor: pointer;
+    }
+
+    .record-row td:last-child,
+    .record-row td:last-child * {
+      cursor: default;
+    }
+
+    .mini-button {
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .footer-note {
+      padding: 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(70, 55, 36, 0.26);
+      z-index: 30;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(1240px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: var(--panel-strong);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .modal-close {
+      min-width: 44px;
+      padding: 0;
+    }
+
+    @media (max-width: 1200px) {
+      .toolbar-grid,
+      .chart-grid,
+      .form-grid,
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        flex-direction: column;
+      }
+
+      .hero-side {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        width: min(100% - 18px, 100%);
+      }
+
+      .toolbar-grid,
+      .chart-grid,
+      .form-grid,
+      .kpis,
+      .hero-side {
+        grid-template-columns: 1fr;
+      }
+
+      .span-2,
+      .span-4 {
+        grid-column: span 1;
+      }
+
+      .section {
+        padding: 18px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="panel hero">
+      <div>
+        <span class="eyebrow">SUBSIDY CRM DASHBOARD</span>
+        <h1>助成金案件の進捗・売上・入金見込みを<br>ひと目で追えるダッシュボード</h1>
+        <p>入力したレコードはこのブラウザ内に保存されます。上部のフィルターと検索で案件を絞り込み、CSV出力と売上推移グラフまで同じ画面で確認できます。</p>
+      </div>
+      <div class="hero-side">
+        <div class="hero-note">
+          <strong>入力から一覧まで一体化</strong>
+          <span>フォーム送信後に一覧・KPI・グラフへ即反映します。</span>
+        </div>
+        <div class="hero-note">
+          <strong>CSVダウンロード対応</strong>
+          <span>現在の絞り込み結果をそのままCSV出力できます。</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">サマリー</h2>
+          <p class="section-subtitle">絞り込み結果に応じて件数と売上を集計しています。</p>
+        </div>
+      </div>
+      <div class="kpis">
+        <article class="kpi">
+          <span class="kpi-label">表示件数</span>
+          <div class="kpi-value" id="kpiCount">0</div>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">受注件数</span>
+          <div class="kpi-value accent" id="kpiOrderCount">0</div>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">表示売上合計</span>
+          <div class="kpi-value" id="kpiRevenue">¥0</div>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">入金済み売上</span>
+          <div class="kpi-value accent" id="kpiPaidRevenue">¥0</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">検索・フィルター</h2>
+          <p class="section-subtitle">企業名検索と主要条件で上部から素早く絞り込めます。</p>
+        </div>
+      </div>
+      <div class="toolbar-grid">
+        <div class="field">
+          <label for="searchCompany">企業名検索</label>
+          <input id="searchCompany" type="search" placeholder="企業名で検索" />
+        </div>
+        <div class="field">
+          <label for="filterStatus">NAステータス</label>
+          <select id="filterStatus"></select>
+        </div>
+        <div class="field">
+          <label for="filterMonth">獲得日（月単位）</label>
+          <select id="filterMonth"></select>
+        </div>
+        <div class="field">
+          <label for="filterConfidence">決着確度</label>
+          <select id="filterConfidence"></select>
+        </div>
+        <button class="secondary" id="resetFilters" type="button">フィルター解除</button>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">売上グラフ</h2>
+          <p class="section-subtitle">選択した日付種別の開始日と終了日で期間を切り、その日付ごとの売上合計を表示します。</p>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="field span-2">
+          <label>集計対象</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="chartMode" value="expected" checked />入金予定日</label>
+            <label class="radio-pill"><input type="radio" name="chartMode" value="actual" />入金日</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="chartStart" id="chartStartLabel">入金予定日 開始日</label>
+          <input id="chartStart" type="date" />
+        </div>
+        <div class="field">
+          <label for="chartEnd" id="chartEndLabel">入金予定日 終了日</label>
+          <input id="chartEnd" type="date" />
+        </div>
+        <button class="secondary" id="chartReset" type="button">期間リセット</button>
+      </div>
+      <div class="chart-shell" style="margin-top: 16px;">
+        <div class="chart-meta">
+          <div class="legend-note" id="chartCaption">データが追加されるとグラフが表示されます。</div>
+          <div class="chart-total">期間内売上合計<strong id="chartTotal">¥0</strong></div>
+        </div>
+        <canvas id="salesChart" width="1200" height="320" aria-label="売上グラフ"></canvas>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">新規レコード追加</h2>
+          <p class="section-subtitle">売上は「初期費用＋（受注時社労士手付金ー引き継ぎ社労士着手金）」で自動計算します。</p>
+        </div>
+      </div>
+      <form id="recordForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="acquirer">獲得者</label>
+            <select id="acquirer" name="acquirer" required></select>
+          </div>
+          <div class="field">
+            <label for="acquiredDate">獲得日</label>
+            <input id="acquiredDate" name="acquiredDate" type="date" required />
+          </div>
+          <div class="field">
+            <label for="meetingOwner">商談者</label>
+            <select id="meetingOwner" name="meetingOwner" required></select>
+          </div>
+          <div class="field">
+            <label for="companyName">企業名</label>
+            <input id="companyName" name="companyName" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="contactPerson">担当者</label>
+            <input id="contactPerson" name="contactPerson" type="text" />
+          </div>
+          <div class="field">
+            <label for="companyUrl">URL</label>
+            <input id="companyUrl" name="companyUrl" type="url" placeholder="https://example.com" />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" />
+          </div>
+          <div class="field">
+            <label for="phone">電話番号</label>
+            <input id="phone" name="phone" type="tel" />
+          </div>
+
+          <div class="field">
+            <label for="mobile">携帯電話</label>
+            <input id="mobile" name="mobile" type="tel" />
+          </div>
+          <div class="field">
+            <label for="firstMeetingDate">初回商談日</label>
+            <input id="firstMeetingDate" name="firstMeetingDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="rescheduleCount">リスケ回数</label>
+            <select id="rescheduleCount" name="rescheduleCount"></select>
+          </div>
+          <div class="field">
+            <label for="naStatus">NAステータス</label>
+            <select id="naStatus" name="naStatus" required></select>
+          </div>
+
+          <div class="field">
+            <label for="confidence">決着確度</label>
+            <select id="confidence" name="confidence"></select>
+          </div>
+          <div class="field">
+            <label for="ngReason">NGの場合のみ記載</label>
+            <select id="ngReason" name="ngReason"></select>
+          </div>
+          <div class="field">
+            <label for="orderAmount">受注金額（¥）</label>
+            <input id="orderAmount" name="orderAmount" type="text" inputmode="numeric" class="currency-input" />
+          </div>
+          <div class="field">
+            <label for="initialFee">初期費用（¥）</label>
+            <input id="initialFee" name="initialFee" type="text" inputmode="numeric" class="currency-input" value="0" />
+          </div>
+
+          <div class="field">
+            <label for="depositAtOrder">受注時社労士手付金（¥）</label>
+            <input id="depositAtOrder" name="depositAtOrder" type="text" inputmode="numeric" class="currency-input" value="0" />
+          </div>
+          <div class="field">
+            <label for="inheritedDeposit">引き継ぎ社労士着手金（¥）</label>
+            <input id="inheritedDeposit" name="inheritedDeposit" type="text" inputmode="numeric" class="currency-input" value="0" />
+          </div>
+          <div class="field">
+            <label for="salesAmount">売上（自動計算 / ¥）</label>
+            <input id="salesAmount" name="salesAmount" type="text" readonly />
+            <span class="field-hint">初期費用 + (受注時社労士手付金 - 引き継ぎ社労士着手金)</span>
+          </div>
+          <div class="field">
+            <label for="applicationDate">申込日</label>
+            <input id="applicationDate" name="applicationDate" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="expectedPaymentDate">入金予定日</label>
+            <input id="expectedPaymentDate" name="expectedPaymentDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="paymentDate">入金日</label>
+            <input id="paymentDate" name="paymentDate" type="date" />
+          </div>
+          <div class="field span-2">
+            <label for="notes">備考</label>
+            <textarea id="notes" name="notes" placeholder="商談内容や補足を記載"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="secondary" id="resetForm" type="button">フォームをクリア</button>
+          <button class="primary" type="submit">レコードを追加</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">レコード一覧</h2>
+          <p class="section-subtitle">一覧は上部のフィルターと検索条件に連動します。</p>
+        </div>
+        <div class="actions" style="margin-top: 0;">
+          <button class="secondary" id="downloadCsv" type="button">CSVダウンロード</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>獲得者</th>
+              <th>獲得日</th>
+              <th>商談者</th>
+              <th>企業名</th>
+              <th>担当者</th>
+              <th>URL</th>
+              <th>Email</th>
+              <th>電話番号</th>
+              <th>携帯電話</th>
+              <th>初回商談日</th>
+              <th>リスケ回数</th>
+              <th>NAステータス</th>
+              <th>決着確度</th>
+              <th>NG理由</th>
+              <th>受注金額</th>
+              <th>初期費用</th>
+              <th>受注時社労士手付金</th>
+              <th>引き継ぎ社労士着手金</th>
+              <th>売上</th>
+              <th>申込日</th>
+              <th>入金予定日</th>
+              <th>入金日</th>
+              <th>備考</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody"></tbody>
+        </table>
+      </div>
+      <p class="footer-note" id="tableSummary">0件表示中</p>
+    </section>
+  </main>
+
+  <div class="modal" id="editModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 class="section-title" style="margin:0;">レコード編集</h2>
+          <p class="section-subtitle" style="margin-top:4px;">一覧の行を押すと内容を確認し、そのまま保存できます。</p>
+        </div>
+        <button class="secondary modal-close" id="closeEditModal" type="button">×</button>
+      </div>
+      <form id="editForm">
+        <input id="editRecordId" type="hidden" />
+        <div class="form-grid">
+          <div class="field">
+            <label for="editAcquirer">獲得者</label>
+            <select id="editAcquirer" name="acquirer" required></select>
+          </div>
+          <div class="field">
+            <label for="editAcquiredDate">獲得日</label>
+            <input id="editAcquiredDate" name="acquiredDate" type="date" required />
+          </div>
+          <div class="field">
+            <label for="editMeetingOwner">商談者</label>
+            <select id="editMeetingOwner" name="meetingOwner" required></select>
+          </div>
+          <div class="field">
+            <label for="editCompanyName">企業名</label>
+            <input id="editCompanyName" name="companyName" type="text" required />
+          </div>
+
+          <div class="field">
+            <label for="editContactPerson">担当者</label>
+            <input id="editContactPerson" name="contactPerson" type="text" />
+          </div>
+          <div class="field">
+            <label for="editCompanyUrl">URL</label>
+            <input id="editCompanyUrl" name="companyUrl" type="url" />
+          </div>
+          <div class="field">
+            <label for="editEmail">Email</label>
+            <input id="editEmail" name="email" type="email" />
+          </div>
+          <div class="field">
+            <label for="editPhone">電話番号</label>
+            <input id="editPhone" name="phone" type="tel" />
+          </div>
+
+          <div class="field">
+            <label for="editMobile">携帯電話</label>
+            <input id="editMobile" name="mobile" type="tel" />
+          </div>
+          <div class="field">
+            <label for="editFirstMeetingDate">初回商談日</label>
+            <input id="editFirstMeetingDate" name="firstMeetingDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="editRescheduleCount">リスケ回数</label>
+            <select id="editRescheduleCount" name="rescheduleCount"></select>
+          </div>
+          <div class="field">
+            <label for="editNaStatus">NAステータス</label>
+            <select id="editNaStatus" name="naStatus" required></select>
+          </div>
+
+          <div class="field">
+            <label for="editConfidence">決着確度</label>
+            <select id="editConfidence" name="confidence"></select>
+          </div>
+          <div class="field">
+            <label for="editNgReason">NGの場合のみ記載</label>
+            <select id="editNgReason" name="ngReason"></select>
+          </div>
+          <div class="field">
+            <label for="editOrderAmount">受注金額（¥）</label>
+            <input id="editOrderAmount" name="orderAmount" type="text" inputmode="numeric" class="currency-input" />
+          </div>
+          <div class="field">
+            <label for="editInitialFee">初期費用（¥）</label>
+            <input id="editInitialFee" name="initialFee" type="text" inputmode="numeric" class="currency-input" />
+          </div>
+
+          <div class="field">
+            <label for="editDepositAtOrder">受注時社労士手付金（¥）</label>
+            <input id="editDepositAtOrder" name="depositAtOrder" type="text" inputmode="numeric" class="currency-input" />
+          </div>
+          <div class="field">
+            <label for="editInheritedDeposit">引き継ぎ社労士着手金（¥）</label>
+            <input id="editInheritedDeposit" name="inheritedDeposit" type="text" inputmode="numeric" class="currency-input" />
+          </div>
+          <div class="field">
+            <label for="editSalesAmount">売上（自動計算 / ¥）</label>
+            <input id="editSalesAmount" name="salesAmount" type="text" readonly />
+            <span class="field-hint">保存時にも再計算されます。</span>
+          </div>
+          <div class="field">
+            <label for="editApplicationDate">申込日</label>
+            <input id="editApplicationDate" name="applicationDate" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="editExpectedPaymentDate">入金予定日</label>
+            <input id="editExpectedPaymentDate" name="expectedPaymentDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="editPaymentDate">入金日</label>
+            <input id="editPaymentDate" name="paymentDate" type="date" />
+          </div>
+          <div class="field span-2">
+            <label for="editNotes">備考</label>
+            <textarea id="editNotes" name="notes"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="secondary" id="cancelEditModal" type="button">閉じる</button>
+          <button class="primary" type="submit">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "subsidy-crm-records-v1";
+
+    const OPTIONS = {
+      acquirer: ["テレアポ", "奥村", "樋口", "櫻井"],
+      meetingOwner: ["奥村", "樋口", "櫻井"],
+      rescheduleCount: ["", "リスケ１", "リスケ２", "リスケ３", "リスケ４", "リスケ５"],
+      naStatus: [
+        "APOキャンセル", "APOリスケ調整中", "新規商談待ち", "商談NG", "再商談",
+        "角度上げ（未約束）", "角度上げ（約束）", "決着", "受注（入金待ち）", "受注（入金済み）",
+        "後確", "受注後キャンセル", "受注（完全成功報酬）", "受注（補助金のみ）"
+      ],
+      confidence: ["", "1~5", "6", "7", "8", "9", "10"],
+      ngReason: ["", "初期費用NG", "少額NG", "社労士NG", "第三者NG", "不審NG", "アプローチNG", "長期留守NG", "物理NG（対象外）"]
+    };
+
+    const labels = {
+      acquirer: "獲得者",
+      acquiredDate: "獲得日",
+      meetingOwner: "商談者",
+      companyName: "企業名",
+      contactPerson: "担当者",
+      companyUrl: "URL",
+      email: "Email",
+      phone: "電話番号",
+      mobile: "携帯電話",
+      firstMeetingDate: "初回商談日",
+      rescheduleCount: "リスケ回数",
+      naStatus: "NAステータス",
+      confidence: "決着確度",
+      ngReason: "NGの場合のみ記載",
+      orderAmount: "受注金額",
+      initialFee: "初期費用",
+      depositAtOrder: "受注時社労士手付金",
+      inheritedDeposit: "引き継ぎ社労士着手金",
+      sales: "売上",
+      applicationDate: "申込日",
+      expectedPaymentDate: "入金予定日",
+      paymentDate: "入金日",
+      notes: "備考"
+    };
+
+    const form = document.getElementById("recordForm");
+    const recordsBody = document.getElementById("recordsBody");
+    const salesAmountInput = document.getElementById("salesAmount");
+    const filterStatus = document.getElementById("filterStatus");
+    const filterMonth = document.getElementById("filterMonth");
+    const filterConfidence = document.getElementById("filterConfidence");
+    const searchCompany = document.getElementById("searchCompany");
+    const chartStart = document.getElementById("chartStart");
+    const chartEnd = document.getElementById("chartEnd");
+    const chartStartLabel = document.getElementById("chartStartLabel");
+    const chartEndLabel = document.getElementById("chartEndLabel");
+    const chartCanvas = document.getElementById("salesChart");
+    const chartCaption = document.getElementById("chartCaption");
+    const chartTotal = document.getElementById("chartTotal");
+    const editModal = document.getElementById("editModal");
+    const editForm = document.getElementById("editForm");
+    const ctx = chartCanvas.getContext("2d");
+
+    let records = loadRecords();
+
+    populateStaticSelect("acquirer", OPTIONS.acquirer, true);
+    populateStaticSelect("meetingOwner", OPTIONS.meetingOwner, true);
+    populateStaticSelect("rescheduleCount", OPTIONS.rescheduleCount, false, "選択してください");
+    populateStaticSelect("naStatus", OPTIONS.naStatus, true);
+    populateStaticSelect("confidence", OPTIONS.confidence, false, "選択してください");
+    populateStaticSelect("ngReason", OPTIONS.ngReason, false, "選択してください");
+    populateStaticSelect("editAcquirer", OPTIONS.acquirer, true);
+    populateStaticSelect("editMeetingOwner", OPTIONS.meetingOwner, true);
+    populateStaticSelect("editRescheduleCount", OPTIONS.rescheduleCount, false, "選択してください");
+    populateStaticSelect("editNaStatus", OPTIONS.naStatus, true);
+    populateStaticSelect("editConfidence", OPTIONS.confidence, false, "選択してください");
+    populateStaticSelect("editNgReason", OPTIONS.ngReason, false, "選択してください");
+
+    initializeFilterSelects();
+    setupCurrencyInputs();
+    updateSalesPreview();
+    updateEditSalesPreview();
+    updateChartDateLabels();
+    applyDefaultChartRange();
+    render();
+
+    document.getElementById("initialFee").addEventListener("input", updateSalesPreview);
+    document.getElementById("depositAtOrder").addEventListener("input", updateSalesPreview);
+    document.getElementById("inheritedDeposit").addEventListener("input", updateSalesPreview);
+    document.getElementById("editInitialFee").addEventListener("input", updateEditSalesPreview);
+    document.getElementById("editDepositAtOrder").addEventListener("input", updateEditSalesPreview);
+    document.getElementById("editInheritedDeposit").addEventListener("input", updateEditSalesPreview);
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const record = {
+        id: generateId(),
+        acquirer: document.getElementById("acquirer").value || "",
+        acquiredDate: document.getElementById("acquiredDate").value || "",
+        meetingOwner: document.getElementById("meetingOwner").value || "",
+        companyName: document.getElementById("companyName").value || "",
+        contactPerson: document.getElementById("contactPerson").value || "",
+        companyUrl: document.getElementById("companyUrl").value || "",
+        email: document.getElementById("email").value || "",
+        phone: document.getElementById("phone").value || "",
+        mobile: document.getElementById("mobile").value || "",
+        firstMeetingDate: document.getElementById("firstMeetingDate").value || "",
+        rescheduleCount: document.getElementById("rescheduleCount").value || "",
+        naStatus: document.getElementById("naStatus").value || "",
+        confidence: document.getElementById("confidence").value || "",
+        ngReason: document.getElementById("ngReason").value || "",
+        orderAmount: getInputNumber("orderAmount"),
+        initialFee: getInputNumber("initialFee"),
+        depositAtOrder: getInputNumber("depositAtOrder"),
+        inheritedDeposit: getInputNumber("inheritedDeposit"),
+        sales: calculateSales(
+          getInputNumber("initialFee"),
+          getInputNumber("depositAtOrder"),
+          getInputNumber("inheritedDeposit")
+        ),
+        applicationDate: document.getElementById("applicationDate").value || "",
+        expectedPaymentDate: document.getElementById("expectedPaymentDate").value || "",
+        paymentDate: document.getElementById("paymentDate").value || "",
+        notes: document.getElementById("notes").value || "",
+        createdAt: new Date().toISOString()
+      };
+
+      records.unshift(record);
+      persistRecords();
+      form.reset();
+      populateStaticSelect("acquirer", OPTIONS.acquirer, true);
+      populateStaticSelect("meetingOwner", OPTIONS.meetingOwner, true);
+      populateStaticSelect("rescheduleCount", OPTIONS.rescheduleCount, false, "選択してください");
+      populateStaticSelect("naStatus", OPTIONS.naStatus, true);
+      populateStaticSelect("confidence", OPTIONS.confidence, false, "選択してください");
+      populateStaticSelect("ngReason", OPTIONS.ngReason, false, "選択してください");
+      resetCurrencyInputs(form);
+      updateSalesPreview();
+      applyDefaultChartRange();
+      render();
+    });
+
+    document.getElementById("resetForm").addEventListener("click", () => {
+      form.reset();
+      resetCurrencyInputs(form);
+      updateSalesPreview();
+    });
+
+    document.getElementById("resetFilters").addEventListener("click", () => {
+      searchCompany.value = "";
+      filterStatus.value = "all";
+      filterMonth.value = "all";
+      filterConfidence.value = "all";
+      render();
+    });
+
+    document.getElementById("downloadCsv").addEventListener("click", downloadCsv);
+    document.getElementById("chartReset").addEventListener("click", () => {
+      applyDefaultChartRange();
+      renderChart();
+    });
+    document.getElementById("closeEditModal").addEventListener("click", closeEditModal);
+    document.getElementById("cancelEditModal").addEventListener("click", closeEditModal);
+
+    searchCompany.addEventListener("input", render);
+    filterStatus.addEventListener("change", render);
+    filterMonth.addEventListener("change", render);
+    filterConfidence.addEventListener("change", render);
+    chartStart.addEventListener("change", renderChart);
+    chartEnd.addEventListener("change", renderChart);
+    document.querySelectorAll('input[name="chartMode"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        updateChartDateLabels();
+        applyDefaultChartRange();
+        renderChart();
+      });
+    });
+
+    recordsBody.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-delete-id]");
+      if (button) {
+        const { deleteId } = button.dataset;
+        records = records.filter((record) => record.id !== deleteId);
+        persistRecords();
+        render();
+        return;
+      }
+
+      const row = event.target.closest("[data-open-id]");
+      if (!row) return;
+      openEditModal(row.dataset.openId);
+    });
+
+    editModal.addEventListener("click", (event) => {
+      if (event.target === editModal) {
+        closeEditModal();
+      }
+    });
+
+    editForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const id = document.getElementById("editRecordId").value;
+      const index = records.findIndex((record) => record.id === id);
+      if (index === -1) return;
+
+      const updated = {
+        ...records[index],
+        acquirer: document.getElementById("editAcquirer").value || "",
+        acquiredDate: document.getElementById("editAcquiredDate").value || "",
+        meetingOwner: document.getElementById("editMeetingOwner").value || "",
+        companyName: document.getElementById("editCompanyName").value || "",
+        contactPerson: document.getElementById("editContactPerson").value || "",
+        companyUrl: document.getElementById("editCompanyUrl").value || "",
+        email: document.getElementById("editEmail").value || "",
+        phone: document.getElementById("editPhone").value || "",
+        mobile: document.getElementById("editMobile").value || "",
+        firstMeetingDate: document.getElementById("editFirstMeetingDate").value || "",
+        rescheduleCount: document.getElementById("editRescheduleCount").value || "",
+        naStatus: document.getElementById("editNaStatus").value || "",
+        confidence: document.getElementById("editConfidence").value || "",
+        ngReason: document.getElementById("editNgReason").value || "",
+        orderAmount: getInputNumber("editOrderAmount"),
+        initialFee: getInputNumber("editInitialFee"),
+        depositAtOrder: getInputNumber("editDepositAtOrder"),
+        inheritedDeposit: getInputNumber("editInheritedDeposit"),
+        sales: calculateSales(
+          getInputNumber("editInitialFee"),
+          getInputNumber("editDepositAtOrder"),
+          getInputNumber("editInheritedDeposit")
+        ),
+        applicationDate: document.getElementById("editApplicationDate").value || "",
+        expectedPaymentDate: document.getElementById("editExpectedPaymentDate").value || "",
+        paymentDate: document.getElementById("editPaymentDate").value || "",
+        notes: document.getElementById("editNotes").value || ""
+      };
+
+      records[index] = updated;
+      persistRecords();
+      closeEditModal();
+      render();
+    });
+
+    function loadRecords() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (error) {
+        console.error("Failed to load records:", error);
+        return [];
+      }
+    }
+
+    function persistRecords() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function setupCurrencyInputs() {
+      document.querySelectorAll(".currency-input").forEach((input) => {
+        formatCurrencyInputElement(input);
+        input.addEventListener("input", () => {
+          const numeric = sanitizeNumberString(input.value);
+          input.value = numeric ? formatPlainNumber(numeric) : "";
+        });
+        input.addEventListener("blur", () => {
+          const numeric = sanitizeNumberString(input.value);
+          input.value = numeric ? formatPlainNumber(numeric) : "";
+        });
+      });
+    }
+
+    function resetCurrencyInputs(scope) {
+      scope.querySelectorAll(".currency-input").forEach((input) => {
+        const defaultValue = input.defaultValue || "";
+        input.value = defaultValue ? formatPlainNumber(defaultValue) : "";
+      });
+    }
+
+    function populateStaticSelect(id, values, required = false, placeholder = "選択してください") {
+      const target = document.getElementById(id);
+      const selectedValue = target.value;
+      target.innerHTML = "";
+
+      if (!required) {
+        target.appendChild(new Option(placeholder, ""));
+      }
+
+      values.forEach((value) => {
+        if (!value && !required) return;
+        target.appendChild(new Option(value, value));
+      });
+
+      if (selectedValue && [...target.options].some((option) => option.value === selectedValue)) {
+        target.value = selectedValue;
+      }
+    }
+
+    function initializeFilterSelects() {
+      setSelectOptions(filterStatus, ["all", ...OPTIONS.naStatus], {
+        all: "すべて"
+      });
+      setSelectOptions(filterConfidence, ["all", ...OPTIONS.confidence.filter(Boolean)], {
+        all: "すべて"
+      });
+      rebuildMonthFilter();
+    }
+
+    function setSelectOptions(select, values, labelsMap = {}) {
+      const current = select.value;
+      select.innerHTML = "";
+      values.forEach((value) => {
+        select.appendChild(new Option(labelsMap[value] || value, value));
+      });
+      if ([...select.options].some((option) => option.value === current)) {
+        select.value = current;
+      }
+    }
+
+    function rebuildMonthFilter() {
+      const current = filterMonth.value || "all";
+      const months = [...new Set(records
+        .map((record) => toMonthKey(record.acquiredDate))
+        .filter(Boolean))]
+        .sort();
+      setSelectOptions(filterMonth, ["all", ...months], { all: "すべて" });
+      if ([...filterMonth.options].some((option) => option.value === current)) {
+        filterMonth.value = current;
+      }
+    }
+
+    function render() {
+      rebuildMonthFilter();
+      const filteredRecords = getFilteredRecords();
+      renderTable(filteredRecords);
+      renderKpis(filteredRecords);
+      renderChart();
+    }
+
+    function getFilteredRecords() {
+      const keyword = searchCompany.value.trim().toLowerCase();
+      return records.filter((record) => {
+        const matchesKeyword = !keyword || record.companyName.toLowerCase().includes(keyword);
+        const matchesStatus = filterStatus.value === "all" || record.naStatus === filterStatus.value;
+        const matchesMonth = filterMonth.value === "all" || toMonthKey(record.acquiredDate) === filterMonth.value;
+        const matchesConfidence = filterConfidence.value === "all" || record.confidence === filterConfidence.value;
+        return matchesKeyword && matchesStatus && matchesMonth && matchesConfidence;
+      });
+    }
+
+    function renderTable(filteredRecords) {
+      recordsBody.innerHTML = "";
+
+      if (!filteredRecords.length) {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td class="wrap" colspan="24"><span class="empty-state">該当するレコードはありません。</span></td>`;
+        recordsBody.appendChild(row);
+        document.getElementById("tableSummary").textContent = "0件表示中";
+        return;
+      }
+
+      filteredRecords.forEach((record) => {
+        const row = document.createElement("tr");
+        row.className = "record-row";
+        row.dataset.openId = record.id;
+        row.innerHTML = `
+          <td>${escapeHtml(record.acquirer)}</td>
+          <td>${formatDate(record.acquiredDate)}</td>
+          <td>${escapeHtml(record.meetingOwner)}</td>
+          <td>${escapeHtml(record.companyName)}</td>
+          <td>${escapeHtml(record.contactPerson)}</td>
+          <td>${renderLink(record.companyUrl)}</td>
+          <td>${escapeHtml(record.email)}</td>
+          <td>${escapeHtml(record.phone)}</td>
+          <td>${escapeHtml(record.mobile)}</td>
+          <td>${formatDate(record.firstMeetingDate)}</td>
+          <td>${escapeHtml(record.rescheduleCount)}</td>
+          <td><span class="status-chip">${escapeHtml(record.naStatus)}</span></td>
+          <td><span class="confidence-chip">${escapeHtml(record.confidence || "-")}</span></td>
+          <td>${escapeHtml(record.ngReason)}</td>
+          <td>${formatCurrency(record.orderAmount)}</td>
+          <td>${formatCurrency(record.initialFee)}</td>
+          <td>${formatCurrency(record.depositAtOrder)}</td>
+          <td>${formatCurrency(record.inheritedDeposit)}</td>
+          <td>${formatCurrency(record.sales)}</td>
+          <td>${formatDate(record.applicationDate)}</td>
+          <td>${formatDate(record.expectedPaymentDate)}</td>
+          <td>${formatDate(record.paymentDate)}</td>
+          <td class="wrap">${escapeHtml(record.notes)}</td>
+          <td>
+            <div class="table-actions">
+              <button type="button" class="mini-button danger" data-delete-id="${record.id}">削除</button>
+            </div>
+          </td>
+        `;
+        recordsBody.appendChild(row);
+      });
+
+      document.getElementById("tableSummary").textContent = `${filteredRecords.length}件表示中`;
+    }
+
+    function renderKpis(filteredRecords) {
+      const totalRevenue = filteredRecords.reduce((sum, record) => sum + toNumber(record.sales), 0);
+      const orderCount = filteredRecords.filter((record) => record.naStatus.includes("受注")).length;
+      const paidRevenue = filteredRecords
+        .filter((record) => record.naStatus === "受注（入金済み）" || Boolean(record.paymentDate))
+        .reduce((sum, record) => sum + toNumber(record.sales), 0);
+
+      document.getElementById("kpiCount").textContent = filteredRecords.length.toLocaleString("ja-JP");
+      document.getElementById("kpiOrderCount").textContent = orderCount.toLocaleString("ja-JP");
+      document.getElementById("kpiRevenue").textContent = formatCurrency(totalRevenue);
+      document.getElementById("kpiPaidRevenue").textContent = formatCurrency(paidRevenue);
+    }
+
+    function renderChart() {
+      const filteredRecords = getFilteredRecords();
+      const mode = document.querySelector('input[name="chartMode"]:checked').value;
+      const chartDateKey = mode === "expected" ? "expectedPaymentDate" : "paymentDate";
+      const chartLabel = mode === "expected" ? "入金予定日" : "入金日";
+      let start = chartStart.value;
+      let end = chartEnd.value;
+
+      if (start && end && start > end) {
+        [start, end] = [end, start];
+      }
+
+      const applicableRecords = filteredRecords.filter((record) => {
+        if (!record[chartDateKey]) return false;
+        if (start && record[chartDateKey] < start) return false;
+        if (end && record[chartDateKey] > end) return false;
+        return true;
+      });
+
+      const grouped = applicableRecords.reduce((map, record) => {
+        const key = record[chartDateKey];
+        map[key] = (map[key] || 0) + toNumber(record.sales);
+        return map;
+      }, {});
+
+      const points = Object.entries(grouped)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([date, value]) => ({ date, value }));
+
+      const total = points.reduce((sum, point) => sum + point.value, 0);
+      chartTotal.textContent = formatCurrency(total);
+
+      if (start || end) {
+        chartCaption.textContent = `${chartLabel} ${start || "指定なし"} 〜 ${end || "指定なし"} の売上推移`;
+      } else {
+        chartCaption.textContent = `${chartLabel}全期間の売上推移`;
+      }
+
+      drawChart(points, chartLabel);
+    }
+
+    function drawChart(points, label) {
+      const width = chartCanvas.width;
+      const height = chartCanvas.height;
+      const padding = { top: 24, right: 30, bottom: 48, left: 74 };
+      const innerWidth = width - padding.left - padding.right;
+      const innerHeight = height - padding.top - padding.bottom;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const gradient = ctx.createLinearGradient(0, padding.top, 0, height - padding.bottom);
+      gradient.addColorStop(0, "rgba(183, 154, 98, 0.36)");
+      gradient.addColorStop(1, "rgba(183, 154, 98, 0)");
+
+      drawAxes();
+
+      if (!points.length) {
+        ctx.fillStyle = "#726556";
+        ctx.font = "14px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("表示できるデータがありません", width / 2, height / 2);
+        return;
+      }
+
+      const maxValue = Math.max(...points.map((point) => point.value), 1);
+      const minValue = 0;
+      const stepCount = 4;
+
+      for (let i = 0; i <= stepCount; i += 1) {
+        const y = padding.top + (innerHeight / stepCount) * i;
+        const value = maxValue - ((maxValue - minValue) / stepCount) * i;
+
+        ctx.strokeStyle = "rgba(83, 68, 45, 0.08)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+
+        ctx.fillStyle = "#726556";
+        ctx.font = "11px sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillText(shortCurrency(value), padding.left - 10, y + 4);
+      }
+
+      const xPositions = points.map((_, index) => {
+        if (points.length === 1) return padding.left + innerWidth / 2;
+        return padding.left + (innerWidth / (points.length - 1)) * index;
+      });
+
+      ctx.beginPath();
+      points.forEach((point, index) => {
+        const x = xPositions[index];
+        const y = padding.top + innerHeight - ((point.value - minValue) / (maxValue - minValue || 1)) * innerHeight;
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.strokeStyle = "#d8bc86";
+      ctx.lineWidth = 3;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.stroke();
+
+      ctx.lineTo(xPositions[xPositions.length - 1], height - padding.bottom);
+      ctx.lineTo(xPositions[0], height - padding.bottom);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      ctx.beginPath();
+      points.forEach((point, index) => {
+        const x = xPositions[index];
+        const y = padding.top + innerHeight - ((point.value - minValue) / (maxValue - minValue || 1)) * innerHeight;
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.strokeStyle = "#d8bc86";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      points.forEach((point, index) => {
+        const x = xPositions[index];
+        const y = padding.top + innerHeight - ((point.value - minValue) / (maxValue - minValue || 1)) * innerHeight;
+
+        ctx.fillStyle = "#fffdf9";
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = "#d8bc86";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = "#2f261b";
+        ctx.font = "11px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(shortCurrency(point.value), x, y - 14);
+
+        ctx.fillStyle = "#726556";
+        ctx.fillText(formatDate(point.date, true), x, height - padding.bottom + 18);
+      });
+
+      ctx.fillStyle = "#726556";
+      ctx.font = "12px sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(`${label}ごとの売上`, padding.left, 16);
+
+      function drawAxes() {
+        ctx.strokeStyle = "rgba(83, 68, 45, 0.18)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, padding.top);
+        ctx.lineTo(padding.left, height - padding.bottom);
+        ctx.lineTo(width - padding.right, height - padding.bottom);
+        ctx.stroke();
+      }
+    }
+
+    function applyDefaultChartRange() {
+      const chartDateKey = getChartDateKey();
+      if (!records.length) {
+        chartStart.value = "";
+        chartEnd.value = "";
+        return;
+      }
+
+      const dates = records.map((record) => record[chartDateKey]).filter(Boolean).sort();
+      chartStart.value = dates[0] || "";
+      chartEnd.value = dates[dates.length - 1] || "";
+    }
+
+    function updateSalesPreview() {
+      const initialFee = getInputNumber("initialFee");
+      const depositAtOrder = getInputNumber("depositAtOrder");
+      const inheritedDeposit = getInputNumber("inheritedDeposit");
+      const sales = calculateSales(initialFee, depositAtOrder, inheritedDeposit);
+      salesAmountInput.value = formatCurrency(sales);
+    }
+
+    function updateEditSalesPreview() {
+      const initialFee = getInputNumber("editInitialFee");
+      const depositAtOrder = getInputNumber("editDepositAtOrder");
+      const inheritedDeposit = getInputNumber("editInheritedDeposit");
+      const sales = calculateSales(initialFee, depositAtOrder, inheritedDeposit);
+      document.getElementById("editSalesAmount").value = formatCurrency(sales);
+    }
+
+    function calculateSales(initialFee, depositAtOrder, inheritedDeposit) {
+      return initialFee + (depositAtOrder - inheritedDeposit);
+    }
+
+    function updateChartDateLabels() {
+      const label = getChartDateKey() === "expectedPaymentDate" ? "入金予定日" : "入金日";
+      chartStartLabel.textContent = `${label} 開始日`;
+      chartEndLabel.textContent = `${label} 終了日`;
+    }
+
+    function getChartDateKey() {
+      return document.querySelector('input[name="chartMode"]:checked').value === "expected"
+        ? "expectedPaymentDate"
+        : "paymentDate";
+    }
+
+    function generateId() {
+      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return window.crypto.randomUUID();
+      }
+      return `record-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function getInputNumber(id) {
+      const input = document.getElementById(id);
+      return toNumber(input ? input.value : 0);
+    }
+
+    function toNumber(value) {
+      if (value === null || value === undefined || value === "") return 0;
+      const normalized = sanitizeNumberString(String(value));
+      const parsed = Number(normalized);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function sanitizeNumberString(value) {
+      return String(value ?? "").replace(/[^\d-]/g, "");
+    }
+
+    function formatPlainNumber(value) {
+      const numeric = sanitizeNumberString(value);
+      if (!numeric || numeric === "-") return "";
+      const sign = numeric.startsWith("-") ? "-" : "";
+      const digits = numeric.replace("-", "");
+      return `${sign}${Number(digits || 0).toLocaleString("ja-JP")}`;
+    }
+
+    function formatCurrencyInputElement(input) {
+      input.value = input.value ? formatPlainNumber(input.value) : "";
+    }
+
+    function toMonthKey(value) {
+      return value ? value.slice(0, 7) : "";
+    }
+
+    function formatCurrency(value) {
+      return `¥${toNumber(value).toLocaleString("ja-JP")}`;
+    }
+
+    function shortCurrency(value) {
+      const num = toNumber(value);
+      if (Math.abs(num) >= 100000000) return `¥${(num / 100000000).toFixed(1)}億`;
+      if (Math.abs(num) >= 10000) return `¥${(num / 10000).toFixed(1)}万`;
+      return `¥${num.toLocaleString("ja-JP")}`;
+    }
+
+    function formatDate(value, compact = false) {
+      if (!value) return "";
+      if (compact) {
+        return value.slice(5).replace("-", "/");
+      }
+      return value;
+    }
+
+    function renderLink(url) {
+      if (!url) return "";
+      const safeUrl = escapeAttribute(url);
+      const safeText = escapeHtml(url);
+      return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:#d8bc86;">${safeText}</a>`;
+    }
+
+    function downloadCsv() {
+      const filteredRecords = getFilteredRecords();
+      const headers = Object.keys(labels);
+      const csvRows = [
+        headers.map((key) => labels[key]).join(","),
+        ...filteredRecords.map((record) => headers.map((key) => csvEscape(formatCsvValue(record, key))).join(","))
+      ];
+
+      const blob = new Blob(["\uFEFF" + csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `subsidy_crm_records_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function formatCsvValue(record, key) {
+      if (["orderAmount", "initialFee", "depositAtOrder", "inheritedDeposit", "sales"].includes(key)) {
+        return toNumber(record[key]);
+      }
+      return record[key] || "";
+    }
+
+    function csvEscape(value) {
+      const text = String(value ?? "");
+      if (/[",\n]/.test(text)) {
+        return `"${text.replace(/"/g, "\"\"")}"`;
+      }
+      return text;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttribute(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function openEditModal(id) {
+      const record = records.find((item) => item.id === id);
+      if (!record) return;
+
+      document.getElementById("editRecordId").value = record.id;
+      document.getElementById("editAcquirer").value = record.acquirer || "";
+      document.getElementById("editAcquiredDate").value = record.acquiredDate || "";
+      document.getElementById("editMeetingOwner").value = record.meetingOwner || "";
+      document.getElementById("editCompanyName").value = record.companyName || "";
+      document.getElementById("editContactPerson").value = record.contactPerson || "";
+      document.getElementById("editCompanyUrl").value = record.companyUrl || "";
+      document.getElementById("editEmail").value = record.email || "";
+      document.getElementById("editPhone").value = record.phone || "";
+      document.getElementById("editMobile").value = record.mobile || "";
+      document.getElementById("editFirstMeetingDate").value = record.firstMeetingDate || "";
+      document.getElementById("editRescheduleCount").value = record.rescheduleCount || "";
+      document.getElementById("editNaStatus").value = record.naStatus || "";
+      document.getElementById("editConfidence").value = record.confidence || "";
+      document.getElementById("editNgReason").value = record.ngReason || "";
+      document.getElementById("editOrderAmount").value = formatPlainNumber(record.orderAmount);
+      document.getElementById("editInitialFee").value = formatPlainNumber(record.initialFee);
+      document.getElementById("editDepositAtOrder").value = formatPlainNumber(record.depositAtOrder);
+      document.getElementById("editInheritedDeposit").value = formatPlainNumber(record.inheritedDeposit);
+      document.getElementById("editApplicationDate").value = record.applicationDate || "";
+      document.getElementById("editExpectedPaymentDate").value = record.expectedPaymentDate || "";
+      document.getElementById("editPaymentDate").value = record.paymentDate || "";
+      document.getElementById("editNotes").value = record.notes || "";
+      updateEditSalesPreview();
+      editModal.classList.add("open");
+      editModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeEditModal() {
+      editModal.classList.remove("open");
+      editModal.setAttribute("aria-hidden", "true");
+    }
+  </script>
+</body>
+</html>

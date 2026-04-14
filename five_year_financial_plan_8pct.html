@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>5カ年収支計画シミュレーター</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --panel: #ffffff;
+      --line: #d6e1ee;
+      --text: #1b2740;
+      --muted: #61728d;
+      --sales: #3867f4;
+      --cost: #f08a3e;
+      --profit: #0c6a5e;
+      --cumulative: #6a3df0;
+      --shadow: 0 20px 50px rgba(17, 33, 60, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(1000px 340px at 100% -10%, #daf4ee 0%, transparent 68%),
+        radial-gradient(1000px 340px at 0% 110%, #dce9fb 0%, transparent 68%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(1320px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 24px 28px 20px;
+      background: linear-gradient(135deg, #f9fcff 0%, #eef5ff 100%);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e6f4ef;
+      color: var(--profit);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 3.5vw, 38px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding: 24px 28px 28px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field.span-3 {
+      grid-column: span 3;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14px;
+      padding: 12px 14px;
+      outline: none;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .segmented {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f7faff;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .segmented button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .segmented button.active {
+      background: var(--accent, #1e4e9b);
+      color: #fff;
+    }
+
+    .checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .checkbox input {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      padding: 0 28px 24px;
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .kpi-label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      display: block;
+      font-size: clamp(20px, 2.2vw, 30px);
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .sales { color: var(--sales); }
+    .cost { color: var(--cost); }
+    .profit { color: var(--profit); }
+    .cumulative { color: var(--cumulative); }
+
+    .chart-panel,
+    .table-panel {
+      padding: 24px 28px 28px;
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .chart-head h2,
+    .table-panel h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    .chart-head p,
+    .notes {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .chart-shell {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      padding: 14px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 500px;
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: right;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    thead th {
+      background: #f7faff;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .notes {
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .controls,
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .field.span-3 {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 12px; }
+
+      .controls,
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .field.span-3 {
+        grid-column: span 1;
+      }
+
+      canvas {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="panel">
+      <div class="hero">
+        <span class="eyebrow">5カ年収支シミュレーター</span>
+        <h1>特定小型原付シェア 5カ年計画</h1>
+        <p>入力条件から、1〜2年目はリース費用、3年目以降はシステム使用料に切り替わる前提で売上・支出・収支を再計算します。</p>
+      </div>
+      <div class="controls">
+        <div class="field">
+          <label for="unitCount">台数（台）</label>
+          <input id="unitCount" type="number" min="1" step="1" value="50" />
+        </div>
+        <div class="field">
+          <label for="utilizationRate">稼働率（%）</label>
+          <input id="utilizationRate" type="number" min="0" max="100" step="0.1" value="8" />
+        </div>
+        <div class="field">
+          <label for="pricePerMinute">分あたりの単価（円）</label>
+          <input id="pricePerMinute" type="number" min="0" step="1" value="25" />
+        </div>
+        <div class="field">
+          <label for="hostShareRate">宿への収益分配（%）</label>
+          <input id="hostShareRate" type="number" min="0" max="100" step="0.1" value="5" />
+        </div>
+        <div class="field">
+          <label for="sponsorFee">スポンサー広告費（円 / 台 / 月）</label>
+          <input id="sponsorFee" type="number" min="0" step="1" value="0" />
+        </div>
+        <div class="field">
+          <label for="rainRate">降水日数率（%）</label>
+          <input id="rainRate" type="number" min="0" max="100" step="0.1" value="0" />
+        </div>
+        <div class="field span-3">
+          <div class="toggle-row">
+            <div>
+              <label style="display:block; margin-bottom:7px;">表示単位</label>
+              <div class="segmented" id="unitModeSwitch">
+                <button type="button" data-mode="year" class="active">年</button>
+                <button type="button" data-mode="month">月</button>
+              </div>
+            </div>
+            <label class="checkbox" style="margin-top:24px;">
+              <input id="showCumulative" type="checkbox" checked />
+              累積収支を表示する
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <span class="kpi-label">1日あたり利用分数</span>
+          <span class="kpi-value sales" id="kpiDailyMinutes">-</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label" id="kpiSalesLabel">1年目売上</span>
+          <span class="kpi-value sales" id="kpiSales">-</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label" id="kpiCostLabel">1年目支出</span>
+          <span class="kpi-value cost" id="kpiCost">-</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label" id="kpiProfitLabel">1年目収支</span>
+          <span class="kpi-value profit" id="kpiProfit">-</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label">5年累積収支</span>
+          <span class="kpi-value cumulative" id="kpiCumulative">-</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel chart-panel">
+      <div class="chart-head">
+        <div>
+          <h2 id="chartTitle">年次収支推移</h2>
+          <p id="chartDescription">棒グラフは各期間ごとに1本で、売上の内訳として支出と収支を積み上げ表示します。</p>
+        </div>
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch" style="border:2px solid var(--sales); background: transparent;"></span>売上総額</span>
+          <span class="legend-item"><span class="legend-swatch" style="background: var(--cost);"></span>支出部分</span>
+          <span class="legend-item"><span class="legend-swatch" style="background: var(--profit);"></span>収支部分</span>
+          <span class="legend-item"><span class="legend-swatch" style="background: var(--cumulative);"></span>累積収支</span>
+        </div>
+      </div>
+      <div class="chart-shell">
+        <canvas id="financeChart" width="1200" height="500"></canvas>
+      </div>
+    </section>
+
+    <section class="panel table-panel">
+      <h2 id="tableTitle">年次データ</h2>
+      <table>
+        <thead>
+          <tr>
+            <th id="periodHeader">年度</th>
+            <th>売上</th>
+            <th>支出</th>
+            <th>収支</th>
+            <th id="cumulativeHeader">累積収支</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <p class="notes">
+        前提ロジック: 稼働率は「1日12時間」に対する比率。月間ライド売上は `12時間 × 60分 × 稼働率 × 30日 × (1 - 降水日数率) × 分単価`。
+        これに `台数 × スポンサー広告費` を月売上として加算。支出は 1〜2年目が `18,000円 × 台数 / 月` のリース費用、
+        3年目以降は `4,000円 × 台数 / 月` のシステム使用料に切替。宿への収益分配は毎月 `売上 × 分配率` を計上。
+        累積収支は各期間の収支を単純累計します。
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const MONTHS_PER_YEAR = 12;
+    const HOURS_PER_DAY = 12;
+    const MINUTES_PER_HOUR = 60;
+    const DAYS_FOR_OPERATION = 30;
+    const DAYS_FOR_REVENUE = 30;
+    const LEASE_PER_UNIT = 18000;
+    const SYSTEM_FEE_PER_UNIT = 4000;
+
+    const fields = {
+      unitCount: document.getElementById("unitCount"),
+      utilizationRate: document.getElementById("utilizationRate"),
+      pricePerMinute: document.getElementById("pricePerMinute"),
+      hostShareRate: document.getElementById("hostShareRate"),
+      sponsorFee: document.getElementById("sponsorFee"),
+      rainRate: document.getElementById("rainRate"),
+      showCumulative: document.getElementById("showCumulative")
+    };
+
+    const unitModeSwitch = document.getElementById("unitModeSwitch");
+    const canvas = document.getElementById("financeChart");
+    const ctx = canvas.getContext("2d");
+    const tableBody = document.getElementById("tableBody");
+
+    let unitMode = "year";
+
+    const formatYen = (value) => `${Math.round(value).toLocaleString("ja-JP")}円`;
+    const formatAxisYen = (value) => `${Math.round(value / 10000).toLocaleString("ja-JP")}万円`;
+
+    function getInputs() {
+      return {
+        units: Number(fields.unitCount.value) || 0,
+        utilizationRate: (Number(fields.utilizationRate.value) || 0) / 100,
+        pricePerMinute: Number(fields.pricePerMinute.value) || 0,
+        hostShareRate: (Number(fields.hostShareRate.value) || 0) / 100,
+        sponsorFee: Number(fields.sponsorFee.value) || 0,
+        rainRate: (Number(fields.rainRate.value) || 0) / 100,
+        showCumulative: fields.showCumulative.checked
+      };
+    }
+
+    function calculateMonthlyModel(inputs, yearIndex) {
+      const operatingMinutesPerDay = HOURS_PER_DAY * MINUTES_PER_HOUR * inputs.utilizationRate;
+      const operatingMinutesPerMonthPerUnit = operatingMinutesPerDay * DAYS_FOR_OPERATION;
+      const operatingMinutesPerMonth = operatingMinutesPerMonthPerUnit * inputs.units;
+      const rideRevenue = operatingMinutesPerDay * inputs.pricePerMinute * DAYS_FOR_REVENUE * (1 - inputs.rainRate) * inputs.units;
+      const adRevenue = inputs.units * inputs.sponsorFee;
+      const sales = rideRevenue + adRevenue;
+      const hostShareCost = sales * inputs.hostShareRate;
+      const fixedCost = yearIndex <= 2 ? inputs.units * LEASE_PER_UNIT : inputs.units * SYSTEM_FEE_PER_UNIT;
+      const cost = fixedCost + hostShareCost;
+      const profit = sales - cost;
+
+      return {
+        operatingMinutesPerDay,
+        operatingMinutesPerMonth,
+        rideRevenue,
+        adRevenue,
+        sales,
+        cost,
+        profit,
+        fixedCost,
+        hostShareCost
+      };
+    }
+
+    function buildYearlySeries(inputs) {
+      let cumulative = 0;
+      const result = [];
+
+      for (let year = 1; year <= 5; year += 1) {
+        const month = calculateMonthlyModel(inputs, year);
+        const sales = month.sales * MONTHS_PER_YEAR;
+        const cost = month.cost * MONTHS_PER_YEAR;
+        const profit = month.profit * MONTHS_PER_YEAR;
+        cumulative += profit;
+
+        result.push({
+          label: `${year}年目`,
+          year,
+          sales,
+          cost,
+          profit,
+          cumulative
+        });
+      }
+
+      return result;
+    }
+
+    function buildMonthlySeries(inputs) {
+      let cumulative = 0;
+      const result = [];
+
+      for (let monthIndex = 1; monthIndex <= 60; monthIndex += 1) {
+        const year = Math.ceil(monthIndex / 12);
+        const month = calculateMonthlyModel(inputs, year);
+        cumulative += month.profit;
+
+        result.push({
+          label: `${monthIndex}月`,
+          shortLabel: monthIndex % 12 === 1 ? `${year}年目` : "",
+          monthIndex,
+          year,
+          sales: month.sales,
+          cost: month.cost,
+          profit: month.profit,
+          cumulative
+        });
+      }
+
+      return result;
+    }
+
+    function getSeries(inputs) {
+      return unitMode === "year" ? buildYearlySeries(inputs) : buildMonthlySeries(inputs);
+    }
+
+    function updateKpis(inputs, series) {
+      const first = series[0] || { sales: 0, cost: 0, profit: 0 };
+      const last = series[series.length - 1] || { cumulative: 0 };
+
+      document.getElementById("kpiDailyMinutes").textContent = `${(calculateMonthlyModel(inputs, 1).operatingMinutesPerDay).toFixed(1)}分`;
+      document.getElementById("kpiSalesLabel").textContent = unitMode === "year" ? "1年目売上" : "1ヶ月目売上";
+      document.getElementById("kpiCostLabel").textContent = unitMode === "year" ? "1年目支出" : "1ヶ月目支出";
+      document.getElementById("kpiProfitLabel").textContent = unitMode === "year" ? "1年目収支" : "1ヶ月目収支";
+      document.getElementById("kpiSales").textContent = formatYen(first.sales);
+      document.getElementById("kpiCost").textContent = formatYen(first.cost);
+      document.getElementById("kpiProfit").textContent = formatYen(first.profit);
+      document.getElementById("kpiCumulative").textContent = formatYen(last.cumulative);
+
+      document.getElementById("chartTitle").textContent = unitMode === "year" ? "年次収支推移" : "月次収支推移（60ヶ月）";
+      document.getElementById("chartDescription").textContent = inputs.showCumulative
+        ? "棒グラフは各期間ごとに1本で、売上の内訳として支出と収支を積み上げ表示します。折れ線は累積収支です。"
+        : "棒グラフは各期間ごとに1本で、売上の内訳として支出と収支を積み上げ表示します。";
+      document.getElementById("tableTitle").textContent = unitMode === "year" ? "年次データ" : "月次データ（60ヶ月）";
+      document.getElementById("periodHeader").textContent = unitMode === "year" ? "年度" : "月";
+      document.getElementById("cumulativeHeader").style.display = inputs.showCumulative ? "table-cell" : "none";
+    }
+
+    function renderTable(inputs, series) {
+      tableBody.innerHTML = "";
+      series.forEach((item) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.label}</td>
+          <td>${formatYen(item.sales)}</td>
+          <td>${formatYen(item.cost)}</td>
+          <td>${formatYen(item.profit)}</td>
+          ${inputs.showCumulative ? `<td>${formatYen(item.cumulative)}</td>` : ""}
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function drawChart(inputs, series) {
+      const width = canvas.width;
+      const height = canvas.height;
+      ctx.clearRect(0, 0, width, height);
+
+      const padding = { top: 28, right: 44, bottom: 70, left: 92 };
+      const plotWidth = width - padding.left - padding.right;
+      const plotHeight = height - padding.top - padding.bottom;
+
+      const stackedMax = Math.max(...series.map((item) => item.sales), 0);
+      const cumulativeMax = inputs.showCumulative ? Math.max(...series.map((item) => item.cumulative), 0) : 0;
+      const cumulativeMin = inputs.showCumulative ? Math.min(...series.map((item) => item.cumulative), 0) : 0;
+      const maxValue = Math.max(stackedMax, cumulativeMax, 1);
+      const minValue = Math.min(0, cumulativeMin);
+      const range = Math.max(maxValue - minValue, 1);
+      const yToPx = (value) => padding.top + ((maxValue - value) / range) * plotHeight;
+
+      ctx.strokeStyle = "#dce5f1";
+      ctx.fillStyle = "#6a7b95";
+      ctx.lineWidth = 1;
+      ctx.font = '12px "Hiragino Sans", "Yu Gothic", sans-serif';
+      ctx.textAlign = "left";
+
+      const axisSteps = 5;
+      for (let i = 0; i <= axisSteps; i += 1) {
+        const value = minValue + ((range / axisSteps) * i);
+        const y = yToPx(value);
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+        ctx.fillText(formatAxisYen(value), 14, y + 4);
+      }
+
+      ctx.strokeStyle = "#9cb0ca";
+      ctx.beginPath();
+      ctx.moveTo(padding.left, padding.top);
+      ctx.lineTo(padding.left, height - padding.bottom);
+      ctx.lineTo(width - padding.right, height - padding.bottom);
+      ctx.stroke();
+
+      const groupWidth = plotWidth / series.length;
+      const barWidth = Math.max(Math.min(groupWidth * 0.42, 34), 10);
+
+      series.forEach((item, index) => {
+        const x = padding.left + groupWidth * index + (groupWidth - barWidth) / 2;
+        const costTop = yToPx(item.sales);
+        const costBottom = yToPx(item.profit);
+        const profitTop = yToPx(item.profit);
+        const profitBottom = yToPx(0);
+
+        ctx.fillStyle = "#f08a3e";
+        ctx.fillRect(x, costTop, barWidth, Math.max(costBottom - costTop, 0));
+
+        ctx.fillStyle = item.profit >= 0 ? "#0c6a5e" : "#cc3d3d";
+        if (item.profit >= 0) {
+          ctx.fillRect(x, profitTop, barWidth, Math.max(profitBottom - profitTop, 0));
+        } else {
+          const negTop = yToPx(0);
+          const negBottom = yToPx(item.profit);
+          ctx.fillRect(x, negTop, barWidth, Math.max(negBottom - negTop, 0));
+        }
+
+        ctx.strokeStyle = "#3157c7";
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(x, yToPx(item.sales), barWidth, Math.max(yToPx(0) - yToPx(item.sales), 0));
+
+        ctx.fillStyle = "#42536e";
+        ctx.textAlign = "center";
+        const labelX = padding.left + groupWidth * index + groupWidth / 2;
+        const primaryLabel = unitMode === "year" ? item.label : (index % 6 === 0 ? item.label : "");
+        if (primaryLabel) ctx.fillText(primaryLabel, labelX, height - padding.bottom + 22);
+        if (unitMode === "month" && item.shortLabel) {
+          ctx.fillStyle = "#72819a";
+          ctx.fillText(item.shortLabel, labelX, height - padding.bottom + 38);
+        }
+      });
+
+      if (inputs.showCumulative) {
+        ctx.beginPath();
+        ctx.strokeStyle = "#6a3df0";
+        ctx.lineWidth = 2.5;
+        series.forEach((item, index) => {
+          const x = padding.left + groupWidth * index + groupWidth / 2;
+          const y = yToPx(item.cumulative);
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        series.forEach((item, index) => {
+          if (unitMode === "month" && index % 6 !== 0 && index !== series.length - 1) return;
+          const x = padding.left + groupWidth * index + groupWidth / 2;
+          const y = yToPx(item.cumulative);
+          ctx.beginPath();
+          ctx.fillStyle = "#6a3df0";
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+    }
+
+    function render() {
+      const inputs = getInputs();
+      const series = getSeries(inputs);
+      updateKpis(inputs, series);
+      renderTable(inputs, series);
+      drawChart(inputs, series);
+    }
+
+    Object.values(fields).forEach((element) => {
+      element.addEventListener("input", render);
+      element.addEventListener("change", render);
+    });
+
+    unitModeSwitch.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        unitMode = button.dataset.mode;
+        unitModeSwitch.querySelectorAll("button").forEach((target) => target.classList.toggle("active", target === button));
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NanoAct | 別府向け特定小型原付シェア導入案内</title>
+  <style>
+    :root {
+      --bg: #eef3fb;
+      --card: #ffffff;
+      --line: #d8e1ef;
+      --text: #1c2a43;
+      --muted: #4d5f7d;
+      --brand: #0c6a5e;
+      --accent: #1f4f99;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(900px 300px at 90% -10%, #d8f2ed 0%, transparent 70%), var(--bg);
+      color: var(--text);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.6;
+    }
+    .wrap {
+      width: min(1100px, 94vw);
+      margin: 24px auto 40px;
+      display: grid;
+      gap: 16px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+    }
+    .hero-copy {
+      padding: 28px;
+      background: linear-gradient(140deg, #f9fcff 0%, #eef5ff 100%);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #dbf4ef;
+      color: var(--brand);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(24px, 3.3vw, 34px);
+      line-height: 1.3;
+    }
+    .hero-copy p { margin: 0; color: var(--muted); font-size: 14px; }
+    .hero-logo {
+      background: #102847;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+    .hero-logo img {
+      width: min(100%, 380px);
+      background: #fff;
+      border-radius: 12px;
+      padding: 8px;
+    }
+    .section { padding: 22px; }
+    .kicker {
+      margin: 0 0 6px;
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      color: var(--accent);
+    }
+    p { margin: 0 0 10px; }
+    .grid2, .grid3 {
+      display: grid;
+      gap: 12px;
+    }
+    .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 16px; }
+    .muted { color: var(--muted); }
+    .list { margin: 0; padding-left: 18px; }
+    .list li { margin: 0 0 6px; }
+    .feature {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 12px;
+    }
+    .image-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f4f8ff;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      min-height: 320px;
+    }
+    .image-box img {
+      width: 100%;
+      max-width: 460px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .spec {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+      background: #fff;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .spec strong { display: block; color: var(--text); font-size: 13px; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+    }
+    .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: inline-grid; place-items: center;
+      color: #fff; background: var(--brand); font-size: 12px; font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .benefit-list { display: grid; gap: 10px; }
+    .benefit-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+    }
+    .benefit-item h3 { margin: 0 0 8px; font-size: 16px; }
+    .footer {
+      padding: 16px 22px 22px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      background: #fbfdff;
+    }
+    .footer a { color: var(--accent); }
+    @media (max-width: 920px) {
+      .hero, .grid2, .grid3, .feature, .steps, .specs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel hero">
+      <div class="hero-copy">
+        <span class="badge">株式会社NanoAct | 別府エリア宿泊施設向け</span>
+        <h1>宿泊者の移動体験を拡張する<br>特定小型原付シェア導入モデル</h1>
+        <p>NanoActが車体を準備し、ホテル・旅館等に設置。宿泊者はアプリで予約から利用、決済まで完結。宿側のオペレーション負担を抑えつつ、観光導線を伸ばすための導入モデルです。</p>
+      </div>
+      <div class="hero-logo">
+        <img src="./images/nanoact-logo.jpg" alt="株式会社NanoAct ロゴ" />
+      </div>
+    </section>
+
+    <section class="panel section">
+      <p class="kicker">POINT 1</p>
+      <h2>特定小型原付について</h2>
+      <p class="muted">特定小型原動機付自転車は、2023年7月施行の法改正で新設された車両区分です。</p>
+      <div class="grid2">
+        <article class="card">
+          <h3>区分と定義（主な基準）</h3>
+          <ul class="list">
+            <li>定格出力: 0.60kW以下</li>
+            <li>車体寸法: 長さ190cm以下、幅60cm以下</li>
+            <li>最高速度: 20km/h以下（歩道モードは6km/h以下）</li>
+            <li>モーターのみで走行可能（ペダル走行不要）</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>運転ルールと必要手続き</h3>
+          <ul class="list">
+            <li>16歳以上は免許不要（16歳未満は運転禁止）</li>
+            <li>ヘルメット着用は努力義務</li>
+            <li>ナンバープレート装着と自賠責保険加入は必須</li>
+            <li>原則は車道走行、標識等で許可された場所のみ歩道走行可</li>
+            <li>歩道走行時は6km/h以下かつ表示灯点滅が必要</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <p class="kicker">POINT 2</p>
+      <h2>使用車体: glafit NFR-01 Pro</h2>
+      <div class="feature">
+        <div class="image-box">
+          <img src="./images/glafit-bikes.png" alt="glafit NFR-01 Pro 2台の車体画像" />
+        </div>
+        <div class="card">
+          <h3>性能面の強み</h3>
+          <p>別府エリアの坂道環境を想定した運用に組み込みやすく、駅・宿・観光地間の短中距離移動を実装しやすい点が強みです。</p>
+          <div class="specs">
+            <div class="spec"><strong>航続距離</strong>定地走行 46km / JEMPA測定 44km</div>
+            <div class="spec"><strong>モーター出力</strong>0.5kW（500W）</div>
+            <div class="spec"><strong>登坂力</strong>30%</div>
+            <div class="spec"><strong>最高速度</strong>20km/h（歩道モード 6km/h）</div>
+            <div class="spec"><strong>充電時間</strong>約5時間</div>
+            <div class="spec"><strong>車両重量</strong>24kg（バッテリー装着時）</div>
+          </div>
+          <h3>宿側導入メリット</h3>
+          <ul class="list">
+            <li>周辺観光への送客導線づくりに活用可能</li>
+            <li>宿の差別化と満足度向上に寄与</li>
+            <li>チェックイン時の簡易案内中心で運用開始しやすい</li>
+            <li>NanoAct主導で設置・運用設計できるため調整負荷が小さい</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <p class="kicker">POINT 3</p>
+      <h2>運用イメージ（アプリ完結）</h2>
+      <div class="steps">
+        <article class="step"><span class="num">1</span><h3>予約</h3><p>宿泊者がアプリで車体と時間を選択し、利用を確定。</p></article>
+        <article class="step"><span class="num">2</span><h3>ロック/アンロック</h3><p>現地で解錠、返却時に施錠して終了。</p></article>
+        <article class="step"><span class="num">3</span><h3>決済</h3><p>利用料金はアプリ上で完了、履歴データ管理も可能。</p></article>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <p class="kicker">POINT 4</p>
+      <h2>宿泊施設様へお願いすること</h2>
+      <div class="grid3">
+        <article class="card">
+          <h3>1. 駐輪スペース</h3>
+          <p>車両サイズ（W560 × L1300 × H1080mm）を目安に、屋内または軒下など雨天時に濡れにくい場所での駐輪スペース確保をお願いします。</p>
+        </article>
+        <article class="card">
+          <h3>2. 簡易な充電</h3>
+          <ul class="list">
+            <li>A) 車体に直接充電: 近くに100Vコンセントがあれば給電口へ接続して充電可能</li>
+            <li>B) バッテリー取り外し充電: 鍵で解除し、バッテリー単体で室内充電可能</li>
+            <li>フル充電1回あたり約15〜25円（契約単価で変動）</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>3. 宿泊者への紹介</h3>
+          <p>チェックイン時の一言案内、または事前メール等での簡単な紹介にご協力ください。詳細説明は不要で、運営側が用意する案内文・QRのご案内のみで問題ありません。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <p class="kicker">POINT 5</p>
+      <h2>特定小型原付シェアリングサービス設置のメリット</h2>
+      <div class="benefit-list">
+        <article class="benefit-item">
+          <h3>1) 宿泊体験の価値が上がり、口コミ・満足度につながる</h3>
+          <ul class="list">
+            <li>観光地の移動ストレスを減らせる</li>
+            <li>滞在中の自由度が上がり、満足度・レビュー改善が期待できる</li>
+          </ul>
+        </article>
+        <article class="benefit-item">
+          <h3>2) 選ばれる理由になり、差別化できる</h3>
+          <ul class="list">
+            <li>モビリティ導入は比較検討時の分かりやすい付加価値</li>
+            <li>体験型の宿、若年層、インバウンド向けに訴求しやすい</li>
+          </ul>
+        </article>
+        <article class="benefit-item">
+          <h3>3) 追加の館内サービスとして収益機会を作れる</h3>
+          <ul class="list"><li>設置協力施設向けに収益分配設計が可能</li></ul>
+        </article>
+        <article class="benefit-item">
+          <h3>4) 車を動かさない滞在を作れて、運用面のメリットも出る</h3>
+          <ul class="list">
+            <li>駐車場不足・狭路エリアで価値が高い</li>
+            <li>タクシー手配などフロント業務の一部軽減につながる可能性</li>
+          </ul>
+        </article>
+        <article class="benefit-item">
+          <h3>5) 地域回遊の促進で、地域連携の打ち手になる</h3>
+          <ul class="list">
+            <li>近隣の飲食・観光施設への回遊増で体験価値向上に貢献</li>
+            <li>観光関連団体との取り組みとしてPRしやすい</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel footer">
+      <strong>お問い合わせ・導入のご相談はこちら</strong><br>
+      株式会社NanoAct 別府エリア導入担当: 櫻井（サクライ）<br>
+      メール: <a href="mailto:sakurai@nanoact.jp">sakurai@nanoact.jp</a><br>
+      お問い合わせフォーム（1分）:
+      <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=tXXefBLjeEmMcUNczENLjFiwHE9kCUhPi9AHtulHIeRUMUdSVEJWMzI0UFpCNkZER0JJOTZRQkQyTi4u" target="_blank" rel="noopener noreferrer">こちら</a>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>使い方・よくある質問 | NanoAct</title>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --panel: #ffffff;
+      --line: #dddddd;
+      --text: #222222;
+      --muted: #666666;
+      --soft: #f0f0f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .wrap {
+      width: min(900px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero,
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .hero {
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 36px);
+      line-height: 1.25;
+    }
+
+    .lead {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .notice {
+      margin: 16px 0 0;
+      padding: 16px 18px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .notice ul {
+      margin: 0 0 10px;
+      padding-left: 20px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-weight: 700;
+    }
+
+    .nav a:hover {
+      background: #ebebeb;
+    }
+
+    .section {
+      padding: 26px 24px;
+      margin-bottom: 16px;
+      scroll-margin-top: 20px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(24px, 3vw, 30px);
+      letter-spacing: 0.02em;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .step,
+    .block,
+    .faq-item {
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .step:first-of-type,
+    .block:first-of-type,
+    .faq-item:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    p {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .faq-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100%, calc(100% - 20px));
+        padding-top: 16px;
+      }
+
+      .hero,
+      .section {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>使い方・よくある質問</h1>
+      <p class="lead">ご利用前に、基本的なルールと操作方法、よくある質問をご確認ください。</p>
+
+      <div class="notice">
+        <ul>
+          <li>16歳未満は利用できません</li>
+          <li>1人乗り専用です</li>
+          <li>ヘルメットの着用をおすすめします</li>
+          <li>飲酒後の運転は禁止です</li>
+          <li>スマートフォンを見ながらの運転、傘さし運転はしないでください</li>
+        </ul>
+        <p>特定小型原付として、16歳以上・免許不要、ヘルメットは努力義務、交通ルール遵守が必要です。</p>
+      </div>
+
+      <nav class="nav">
+        <a href="#check">乗る前のチェック</a>
+        <a href="#howto">基本の使い方</a>
+        <a href="#faq">よくある質問</a>
+      </nav>
+    </section>
+
+    <section class="section" id="check">
+      <h2>乗る前のチェック</h2>
+      <div class="block">
+        <ul>
+          <li>シートはつま先が地面に付く高さに調整してください</li>
+          <li>ハンドルは無理のない高さにしてください</li>
+          <li>走り出す前にセンタースタンドが上がっていることを確認してください</li>
+        </ul>
+        <p>シートはMAX印を超えない範囲で調整し、ハンドル高さも調整可能です。走行時はセンタースタンドを確実に上げる必要があります。</p>
+      </div>
+    </section>
+
+    <section class="section" id="howto">
+      <h2>基本の使い方</h2>
+
+      <div class="step">
+        <h3>1. 電源を入れる</h3>
+        <p>パワースイッチを約2秒長押ししてください。</p>
+        <p>電源を入れると、ライト類は自動で点灯します。</p>
+      </div>
+
+      <div class="step">
+        <h3>2. 走行モードを確認する</h3>
+        <p>この車両は2つのモードがあります。</p>
+        <ul>
+          <li>歩道可モード：最高 6km/h</li>
+          <li>車道専用モード：最高 20km/h</li>
+        </ul>
+        <p>モード切替は、停車中にブレーキを握った状態で行ってください。</p>
+        <p>電源を入れた直後は歩道可モードです。</p>
+      </div>
+
+      <div class="step">
+        <h3>3. 乗車する</h3>
+        <ul>
+          <li>左右のブレーキを握ってまたがってください</li>
+          <li>乗るときはスロットルに触れないでください</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <h3>4. 発進する</h3>
+        <p>右手側のスロットルをゆっくり回すと走り出します。</p>
+        <p>急に回すと急発進の恐れがあるため、ゆっくり操作してください。</p>
+      </div>
+
+      <div class="step">
+        <h3>5. 止まる</h3>
+        <p>右レバーが前輪ブレーキ、左レバーが後輪ブレーキです。</p>
+        <p>止まるときは、スロットルから手を離して、前後のブレーキを一緒に使ってください。</p>
+      </div>
+
+      <div class="block">
+        <h3>操作方法</h3>
+        <p><strong>ウィンカー</strong></p>
+        <p>曲がる・進路変更のときはウィンカーを使ってください。</p>
+        <p>スイッチを右で右、左で左、中央に戻すと消灯です。</p>
+        <p>自動では戻らないので、消し忘れに注意してください。</p>
+
+        <p style="margin-top:14px;"><strong>ホーン</strong></p>
+        <p>ホーンボタンを押すと鳴ります。</p>
+      </div>
+
+      <div class="block">
+        <h3>駐輪・返却</h3>
+        <ul>
+          <li>平らな場所に停めてください</li>
+          <li>センタースタンドを立ててください</li>
+          <li>必ず指定の返却場所へ戻してください</li>
+        </ul>
+        <p>駐輪時はセンタースタンドを使い、特定小型原付が駐輪可能な場所に停める必要があります。</p>
+      </div>
+
+      <div class="block">
+        <h3>雨の日について</h3>
+        <ul>
+          <li>強い雨・風の日は利用しないでください</li>
+          <li>濡れた路面、水たまり、滑りやすい道では注意してください</li>
+        </ul>
+        <p>取説では、完全防水ではなく、激しい雨や滑りやすい路面での運転は避けるよう案内されています。</p>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <h2>よくある質問</h2>
+
+      <div class="faq-item">
+        <strong>Q. 電源が入りません</strong>
+        <p>A. パワースイッチを2秒ほど長押ししてください。</p>
+        <p>それでも入らない場合は、サポートへご連絡ください。</p>
+        <p>取説のトラブルシューティングでも、電源が入らない場合は長押しとバッテリー確認が案内されています。</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 動きません</strong>
+        <p>A. まず以下を確認してください。</p>
+        <ul>
+          <li>センタースタンドが上がっているか</li>
+          <li>電源が入っているか</li>
+          <li>スロットルをゆっくり回しているか</li>
+        </ul>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 速度が遅いです</strong>
+        <p>A. バッテリー残量が少ない可能性があります。</p>
+        <p>バッテリー残量が少ないと出力や速度が落ちることがあります。</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 雨の日も使えますか</strong>
+        <p>A. 小雨程度でも路面状況に注意が必要です。</p>
+        <p>強い雨や滑りやすい路面では利用しないでください。</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 2人乗りできますか</strong>
+        <p>A. できません。1人乗り専用です。仕様上の乗車定員は1名です。</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>緊急時のご案内 | NanoAct</title>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --panel: #ffffff;
+      --line: #dddddd;
+      --text: #222222;
+      --muted: #666666;
+      --soft: #f0f0f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .wrap {
+      width: min(900px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero,
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .hero {
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 36px);
+      line-height: 1.25;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-weight: 700;
+    }
+
+    .nav a:hover {
+      background: #ebebeb;
+    }
+
+    .section {
+      padding: 26px 24px;
+      margin-bottom: 16px;
+      scroll-margin-top: 20px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(24px, 3vw, 30px);
+      letter-spacing: 0.02em;
+    }
+
+    .step {
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .step:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    p {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .contact {
+      margin-top: 14px;
+      padding: 16px 18px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .contact strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .contact a {
+      color: var(--text);
+    }
+
+    .trouble-list {
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100%, calc(100% - 20px));
+        padding-top: 16px;
+      }
+
+      .hero,
+      .section {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>緊急時のご案内</h1>
+      <p class="lead">事故・接触、または車両トラブルが起きた際は、以下の案内に沿って対応してください。</p>
+      <nav class="nav">
+        <a href="#accident">事故・接触が起きたとき</a>
+        <a href="#trouble">車両トラブルが起きたとき</a>
+      </nav>
+    </section>
+
+    <section class="section" id="accident">
+      <h2>事故・接触が起きたとき</h2>
+
+      <div class="step">
+        <h3>1. まず安全を確保してください</h3>
+        <p>無理にその場を動かず、後続車や周囲の人に注意しながら、ご自身と相手の安全を最優先してください。</p>
+        <p>走行を続けず、可能であれば安全な場所に移動してください。</p>
+      </div>
+
+      <div class="step">
+        <h3>2. けが人がいる場合は、すぐに119番してください</h3>
+        <p>ご自身、同乗者、相手、歩行者などにけがや痛みがある場合は、まず救急へ連絡してください。</p>
+        <p>出血、強い痛み、頭を打った、動けない場合は、運営会社への連絡より先に119番をお願いします。</p>
+      </div>
+
+      <div class="step">
+        <h3>3. 交通事故・接触事故の場合は110番してください</h3>
+        <p>相手の車や人、建物、ガードレールなどに接触した場合は、必ず警察へ連絡してください。</p>
+        <p>小さな接触でも、後からトラブルになる可能性があるため、自己判断でそのまま終わらせないようお願いします。</p>
+      </div>
+
+      <div class="step">
+        <h3>4. その後、運営会社へご連絡ください</h3>
+        <p>安全確保・119番・110番が済みましたら、緊急連絡先から運営会社へご連絡ください。</p>
+        <p>ご連絡の際は、次の内容が分かるとスムーズです。</p>
+        <ul>
+          <li>お名前</li>
+          <li>利用している施設名</li>
+          <li>車両ナンバー</li>
+          <li>現在地</li>
+          <li>けが人の有無</li>
+          <li>相手や物との接触の有無</li>
+          <li>車両が動かせるかどうか</li>
+        </ul>
+
+        <div class="contact">
+          <strong>株式会社NanoAct</strong>
+          <div>メールアドレス：<a href="mailto:info@nanoact.jp">info@nanoact.jp</a></div>
+          <div>電話番号：<a href="tel:0528563221">052-856-3221</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="trouble">
+      <h2>車両トラブルが起きたとき</h2>
+      <ul class="trouble-list">
+        <li>解錠できない</li>
+        <li>電源が入らない</li>
+        <li>走行できない</li>
+        <li>バッテリー残量が少ない</li>
+      </ul>
+
+      <div class="contact">
+        <strong>株式会社NanoAct</strong>
+        <div>メールアドレス：<a href="mailto:info@nanoact.jp">info@nanoact.jp</a></div>
+        <div>電話番号：<a href="tel:0528563221">052-856-3221</a></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
