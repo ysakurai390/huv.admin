@@ -1,323 +1,1289 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NanoAct | 別府向け特定小型原付シェア導入案内</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HUV | 別府の移動を、もっと自由に。</title>
   <style>
-    :root {
-      --bg: #eef3fb;
-      --card: #ffffff;
-      --line: #d8e1ef;
-      --text: #1c2a43;
-      --muted: #4d5f7d;
-      --brand: #0c6a5e;
-      --accent: #1f4f99;
+    :root{
+      --bg:#f3f1eb;
+      --paper:#f7f5ef;
+      --ink:#151515;
+      --text:#1d1d1d;
+      --sub:#595959;
+      --line:#cfc9be;
+      --line-dark:#aaa394;
+      --accent:#2b2b2b;
+      --max:1280px;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: radial-gradient(900px 300px at 90% -10%, #d8f2ed 0%, transparent 70%), var(--bg);
-      color: var(--text);
-      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
-      line-height: 1.6;
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:
+        "Helvetica Neue",
+        "Arial",
+        "Hiragino Sans",
+        "Yu Gothic",
+        sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      letter-spacing:.01em;
+      line-height:1.65;
     }
-    .wrap {
-      width: min(1100px, 94vw);
-      margin: 24px auto 40px;
-      display: grid;
-      gap: 16px;
+
+    img{
+      display:block;
+      width:100%;
+      max-width:100%;
     }
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      overflow: hidden;
+
+    a{
+      color:inherit;
+      text-decoration:none;
     }
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
+
+    .wrap{
+      width:min(100% - 20px, var(--max));
+      margin:0 auto;
     }
-    .hero-copy {
-      padding: 28px;
-      background: linear-gradient(140deg, #f9fcff 0%, #eef5ff 100%);
+
+    .site-header{
+      border-bottom:none;
+      background:transparent;
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      z-index:5;
+      padding:0 14px 0 10px;
     }
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #dbf4ef;
-      color: var(--brand);
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 10px;
+
+    .header-inner{
+      min-height:88px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:28px;
+      padding:12px 0;
     }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(24px, 3.3vw, 34px);
-      line-height: 1.3;
+
+    .header-left,
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:30px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:#fff;
+      text-shadow:0 1px 18px rgba(0,0,0,.42);
     }
-    .hero-copy p { margin: 0; color: var(--muted); font-size: 14px; }
-    .hero-logo {
-      background: #102847;
-      display: grid;
-      place-items: center;
-      padding: 20px;
+
+    .header-left a,
+    .header-right a{
+      white-space:nowrap;
     }
-    .hero-logo img {
-      width: min(100%, 380px);
-      background: #fff;
-      border-radius: 12px;
-      padding: 8px;
+
+    .header-right{
+      justify-content:flex-end;
     }
-    .section { padding: 22px; }
-    .kicker {
-      margin: 0 0 6px;
-      color: var(--brand);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+
+    .brand{
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      padding:10px 0;
+      margin-right:auto;
     }
-    h2 {
-      margin: 0 0 10px;
-      font-size: 30px;
-      color: var(--accent);
+
+    .brand img{
+      width:min(220px, 100%);
+      height:auto;
+      filter:invert(1) drop-shadow(0 1px 16px rgba(0,0,0,.32));
     }
-    p { margin: 0 0 10px; }
-    .grid2, .grid3 {
-      display: grid;
-      gap: 12px;
+
+    .page{
+      padding-bottom:18px;
     }
-    .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .card {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      background: #fff;
+
+    .hero{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      gap:0;
+      border-bottom:1px solid var(--line);
+      min-height:100svh;
+      overflow:hidden;
     }
-    .card h3 { margin: 0 0 8px; font-size: 16px; }
-    .muted { color: var(--muted); }
-    .list { margin: 0; padding-left: 18px; }
-    .list li { margin: 0 0 6px; }
-    .feature {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 12px;
+
+    .hero-image{
+      position:absolute;
+      inset:0;
+      z-index:0;
+      min-height:0;
+      background:#171614;
+      overflow:hidden;
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      padding:18px;
     }
-    .image-box {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #f4f8ff;
-      display: grid;
-      place-items: center;
-      padding: 12px;
-      min-height: 320px;
+
+    .hero-image::before{
+      content:none;
+      position:absolute;
+      top:14px;
+      left:14px;
+      z-index:2;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.72);
+      background:rgba(0,0,0,.18);
+      padding:4px 8px;
+      border:1px solid rgba(255,255,255,.16);
     }
-    .image-box img {
-      width: 100%;
-      max-width: 460px;
-      height: auto;
-      object-fit: contain;
-      border-radius: 10px;
+
+    .hero-image::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:1;
+      background:linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.10) 34%, rgba(0,0,0,.58) 100%);
+      pointer-events:none;
     }
-    .specs {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      margin: 10px 0;
+
+    .hero-video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      z-index:0;
     }
-    .spec {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 8px;
-      background: #fff;
-      font-size: 12px;
-      color: var(--muted);
+
+    .hero-placeholder{
+      display:none;
+      width:min(360px, 100%);
+      min-height:150px;
+      border:1px dashed rgba(255,255,255,.26);
+      background:rgba(0,0,0,.16);
+      padding:18px;
+      align-content:end;
+      gap:8px;
     }
-    .spec strong { display: block; color: var(--text); font-size: 13px; }
-    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .step {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      background: #fff;
+
+    .hero-placeholder strong{
+      font-size:34px;
+      line-height:1.02;
+      letter-spacing:-.05em;
+      text-transform:uppercase;
+      color:#fff;
     }
-    .num {
-      width: 24px; height: 24px; border-radius: 50%;
-      display: inline-grid; place-items: center;
-      color: #fff; background: var(--brand); font-size: 12px; font-weight: 700;
-      margin-bottom: 6px;
+
+    .hero-placeholder span{
+      max-width:340px;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:rgba(255,255,255,.72);
     }
-    .benefit-list { display: grid; gap: 10px; }
-    .benefit-item {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      background: #fff;
+
+    .hero-copy{
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      width:100%;
+      min-height:100svh;
+      padding:54svh 44px 36px;
+      background:transparent;
+      border-left:none;
+      backdrop-filter:none;
     }
-    .benefit-item h3 { margin: 0 0 8px; font-size: 16px; }
-    .footer {
-      padding: 16px 22px 22px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 13px;
-      background: #fbfdff;
+
+    .eyebrow{
+      display:block;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:rgba(255,255,255,.78);
+      margin-bottom:14px;
     }
-    .footer a { color: var(--accent); }
-    @media (max-width: 920px) {
-      .hero, .grid2, .grid3, .feature, .steps, .specs { grid-template-columns: 1fr; }
+
+    h1{
+      margin:0;
+      font-size:clamp(42px, 7.8vw, 92px);
+      line-height:.95;
+      letter-spacing:-.06em;
+      font-weight:700;
+      text-transform:uppercase;
+      color:#fff;
+    }
+
+    .hero-desc{
+      max-width:720px;
+      margin-top:18px;
+      color:rgba(255,255,255,.82);
+      font-size:13px;
+    }
+
+    .mobile-line{
+      display:inline;
+    }
+
+    .hero-bottom{
+      display:none;
+    }
+
+    .hero-meta{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .meta{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:rgba(255,255,255,.74);
+    }
+
+    .meta strong{
+      display:block;
+      color:#fff;
+      font-size:12px;
+      margin-bottom:5px;
+      letter-spacing:.14em;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:0 16px;
+      border:1px solid var(--ink);
+      background:transparent;
+      color:var(--ink);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .btn-dark{
+      background:#fff;
+      color:var(--ink);
+      border-color:#fff;
+    }
+
+    .section{
+      border-bottom:none;
+      padding:0;
+      background:var(--paper);
+    }
+
+    .category-heading{
+      padding:18px 16px;
+      border-bottom:1px solid var(--line);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--sub);
+    }
+
+    .category-body{
+      padding:22px 18px 26px;
+    }
+
+    .section-grid{
+      display:grid;
+      grid-template-columns:260px 1fr;
+      gap:0;
+    }
+
+    .section-label{
+      padding:18px 16px;
+      border-right:1px solid var(--line);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--sub);
+    }
+
+    .section-body{
+      padding:18px 18px 20px;
+    }
+
+    .section-body.blank-space{
+      min-height:48px;
+      padding:0;
+    }
+
+    .section-grid.concept-space{
+      display:block;
+    }
+
+    .mobility-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      margin-top:22px;
+    }
+
+    .mobility-card{
+      min-height:170px;
+      padding:18px 16px;
+      border-right:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .mobility-card:last-child{
+      border-right:none;
+    }
+
+    .mobility-card .meta-label{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--sub);
+    }
+
+    .mobility-card h3{
+      margin:22px 0 8px;
+      font-size:24px;
+      line-height:1.15;
+      letter-spacing:-.03em;
+      text-transform:uppercase;
+      color:var(--ink);
+    }
+
+    .mobility-card p{
+      margin:0;
+      font-size:13px;
+      color:var(--sub);
+      max-width:420px;
+    }
+
+    .section-spacer{
+      min-height:48px;
+      border-bottom:none;
+      background:var(--paper);
+    }
+
+    .intro-copy{
+      max-width:940px;
+      font-size:clamp(22px, 3vw, 36px);
+      line-height:1.25;
+      letter-spacing:-.03em;
+      color:var(--ink);
+    }
+
+    .intro-sub{
+      margin-top:14px;
+      max-width:720px;
+      font-size:13px;
+      color:var(--sub);
+    }
+
+    #mobility{
+      padding-top:34px;
+    }
+
+    #mobility .intro-copy{
+      font-size:clamp(16px, 1.8vw, 22px);
+      line-height:1.45;
+      letter-spacing:-.01em;
+      max-width:none;
+      white-space:nowrap;
+    }
+
+    .intro-mobile-line{
+      display:inline;
+    }
+
+    #howto .feature h3{
+      font-size:20px;
+      letter-spacing:-.02em;
+    }
+
+    .feature-list{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+    }
+
+    .feature{
+      min-height:240px;
+      padding:18px 16px;
+      border-right:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:center;
+      text-align:center;
+      gap:14px;
+    }
+
+    .feature:last-child{
+      border-right:none;
+    }
+
+    .feature-num{
+      font-size:13px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:var(--ink);
+    }
+
+    .feature h3{
+      margin:0 0 8px;
+      font-size:24px;
+      line-height:1.15;
+      letter-spacing:-.03em;
+      text-transform:uppercase;
+      color:var(--ink);
+    }
+
+    .feature p{
+      margin:0;
+      font-size:13px;
+      color:var(--sub);
+      max-width:320px;
+      text-align:center;
+    }
+
+    .feature-icon{
+      width:92px;
+      height:92px;
+      object-fit:contain;
+      margin-top:6px;
+    }
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:0;
+      min-height:520px;
+    }
+
+    .gallery-copy{
+      padding:18px 16px 18px;
+      border-right:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .gallery-copy h2{
+      margin:10px 0 14px;
+      font-size:clamp(24px, 2.6vw, 38px);
+      line-height:1.08;
+      letter-spacing:-.04em;
+      text-transform:uppercase;
+    }
+
+    .gallery-copy p{
+      margin:0 0 12px;
+      font-size:13px;
+      color:var(--sub);
+      max-width:270px;
+    }
+
+    .gallery-mobile-line{
+      display:inline;
+    }
+
+    .gallery-index{
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--sub);
+      margin-top:18px;
+    }
+
+    .slider{
+      position:relative;
+      overflow:hidden;
+      background:#d9d3c8;
+      aspect-ratio: 3 / 2;
+      height:auto;
+    }
+
+    .slider-track{
+      display:flex;
+      height:100%;
+      transition:transform .9s ease;
+    }
+
+    .slide{
+      position:relative;
+      flex:0 0 100%;
+      min-width:100%;
+      height:100%;
+      overflow:hidden;
+      border-right:1px solid rgba(0,0,0,.08);
+      background-color:#dcd6cb;
+      background-repeat:no-repeat;
+      background-position:center;
+      background-size:contain;
+    }
+
+    .slide::before{
+      position:absolute;
+      top:14px;
+      left:14px;
+      z-index:2;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:rgba(0,0,0,.72);
+      background:rgba(243,241,235,.88);
+      padding:4px 8px;
+      border:1px solid rgba(0,0,0,.1);
+    }
+
+    .slide::after{
+      position:absolute;
+      left:14px;
+      bottom:14px;
+      z-index:2;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.02em;
+      color:rgba(0,0,0,.88);
+      background:rgba(243,241,235,.9);
+      padding:7px 9px;
+      border:1px solid rgba(0,0,0,.1);
+    }
+
+    .slide-placeholder{
+      width:min(340px, 100%);
+      min-height:170px;
+      border:1px dashed rgba(0,0,0,.18);
+      background:rgba(247,245,239,.76);
+      padding:16px;
+      display:grid;
+      gap:8px;
+      align-content:end;
+    }
+
+    .slide-placeholder strong{
+      font-size:24px;
+      line-height:1.05;
+      letter-spacing:-.04em;
+      text-transform:uppercase;
+      color:var(--ink);
+    }
+
+    .slide-placeholder span{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--sub);
+    }
+
+    .slide.s1{
+      background-image:url("./images/gallery-slide-1.jpg");
+    }
+
+    .slide.s2{
+      background-image:url("./images/gallery-slide-2.jpg");
+    }
+
+    .slide.s3{
+      background-image:url("./images/gallery-slide-3.jpg");
+    }
+
+    .slide.s1::before{content:none}
+    .slide.s1::after{content:"坂道の負担を減らして、行動範囲をもっと広く。"}
+    .slide.s2::before{content:none}
+    .slide.s2::after{content:"寄り道まで、旅の楽しさに変わっていく。"}
+    .slide.s3::before{content:none}
+    .slide.s3::after{content:"少し先の景色にも、気軽に会いに行ける。"}
+
+    .slider-nav{
+      display:flex;
+      gap:0;
+      border-top:1px solid var(--line);
+    }
+
+    .nav-seg{
+      flex:1;
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-right:1px solid var(--line);
+      font-size:11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--sub);
+      background:var(--paper);
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .nav-seg:last-child{
+      border-right:none;
+    }
+
+    .nav-seg.active{
+      color:var(--ink);
+      background:#efebe2;
+    }
+
+    .cta-panel{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:0;
+    }
+
+    .cta-main{
+      padding:0;
+      border-right:none;
+      display:contents;
+    }
+
+    .cta-main h2{
+      margin:0 0 12px;
+      font-size:clamp(30px, 4vw, 54px);
+      line-height:1.05;
+      letter-spacing:-.05em;
+      text-transform:uppercase;
+      color:var(--ink);
+    }
+
+    .cta-main p{
+      margin:0;
+      max-width:700px;
+      font-size:13px;
+      color:var(--sub);
+    }
+
+    .bottom-grid{
+      display:contents;
+    }
+
+    .bottom-left{
+      padding:18px 16px;
+      border-right:1px solid var(--line);
+      display:grid;
+      gap:18px;
+      align-content:center;
+      justify-items:center;
+      text-align:center;
+      min-height:300px;
+    }
+
+    .square-logo{
+      width:min(130px, 100%);
+      height:auto;
+    }
+
+    .cta-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
+
+    .bottom-right{
+      display:contents;
+    }
+
+    .qr-card{
+      padding:18px 16px;
+      border-right:1px solid var(--line);
+      display:grid;
+      gap:14px;
+      align-content:center;
+      justify-items:center;
+      text-align:center;
+    }
+
+    .qr-card:last-child{
+      border-right:1px solid var(--line);
+    }
+
+    .qr-label{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--sub);
+    }
+
+    .qr-box{
+      aspect-ratio:1 / 1;
+      width:min(145px, 100%);
+      border:1px dashed rgba(0,0,0,.22);
+      background:
+        linear-gradient(135deg, rgba(0,0,0,.02), rgba(0,0,0,.02)),
+        repeating-linear-gradient(0deg, #f5f2ec, #f5f2ec 12px, #f1eee8 12px, #f1eee8 24px);
+      display:grid;
+      place-items:center;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--sub);
+      text-align:center;
+      padding:16px;
+    }
+
+    .qr-box.has-image{
+      padding:10px;
+      background:#fff;
+      border-style:solid;
+    }
+
+    .qr-box img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    .qr-card p{
+      margin:0;
+      font-size:12px;
+      color:var(--sub);
+      max-width:220px;
+    }
+
+    .qr-card p a{
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+
+    .cta-side{
+      padding:18px 16px;
+      display:grid;
+      align-content:center;
+      justify-items:center;
+      gap:14px;
+      min-height:300px;
+      text-align:center;
+    }
+
+    .cta-side .label{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--sub);
+    }
+
+    .info{
+      margin-top:0;
+      font-size:12px;
+      line-height:1.9;
+      color:var(--ink);
+      display:grid;
+      gap:4px;
+      justify-items:center;
+      width:max-content;
+      max-width:100%;
+    }
+
+    .info strong{
+      display:inline-block;
+      min-width:84px;
+      font-weight:700;
+    }
+
+    .info-row{
+      display:grid;
+      grid-template-columns:54px minmax(0, auto);
+      gap:10px;
+      align-items:start;
+      justify-content:start;
+      text-align:left;
+      width:100%;
+    }
+
+    .info-row strong{
+      min-width:0;
+    }
+
+    .footer{
+      min-height:50px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--sub);
+    }
+
+    @media (max-width: 980px){
+      .hero,
+      .gallery-grid,
+      .cta-panel,
+      .section-grid,
+      .bottom-grid,
+      .bottom-right{
+        grid-template-columns:1fr;
+      }
+
+      .gallery-copy,
+      .hero-image,
+      .cta-main,
+      .bottom-left,
+      .qr-card{
+        border-right:none;
+      }
+
+      .gallery-copy,
+      .cta-side,
+      .bottom-left,
+      .qr-card{
+        border-bottom:1px solid var(--line);
+      }
+
+      .hero-image{
+        min-height:0;
+      }
+
+      .hero-copy{
+        min-height:100svh;
+        padding:40svh 24px 28px;
+      }
+
+      .feature-list{
+        grid-template-columns:1fr;
+      }
+
+      .mobility-grid{
+        grid-template-columns:1fr;
+      }
+
+      .mobility-card{
+        border-right:none;
+        border-bottom:1px solid var(--line);
+      }
+
+      .mobility-card:last-child{
+        border-bottom:none;
+      }
+
+      .feature{
+        border-right:none;
+        border-bottom:1px solid var(--line);
+      }
+
+      #mobility .intro-copy{
+        white-space:normal;
+      }
+
+      .feature:last-child{
+        border-bottom:none;
+      }
+
+      .hero-bottom{
+        grid-template-columns:1fr;
+      }
+
+      .hero-meta{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 640px){
+      .wrap{
+        width:min(100% - 12px, var(--max));
+      }
+
+      .site-header{
+        padding:0 10px 0 8px;
+      }
+
+      .header-inner{
+        flex-direction:row;
+        align-items:center;
+        gap:12px;
+        min-height:64px;
+        padding:8px 0;
+      }
+
+      .brand{
+        padding-top:6px;
+        margin-right:auto;
+      }
+
+      .brand img{
+        width:min(128px, 100%);
+      }
+
+      .header-right{
+        gap:7px;
+        font-size:8px;
+        margin-left:auto;
+      }
+
+      .header-left{
+        display:none;
+      }
+
+      .hero{
+        min-height:240px;
+        height:min(72vw, 320px);
+        aspect-ratio:auto;
+      }
+
+      h1{
+        font-size:clamp(18px, 5.8vw, 26px);
+        line-height:1;
+      }
+
+      .hero-copy{
+        position:absolute;
+        inset:0;
+        min-height:0;
+        padding:96px 16px 12px;
+        justify-content:flex-end;
+      }
+
+      .hero-desc{
+        max-width:72%;
+        font-size:8px;
+        line-height:1.32;
+        margin-top:8px;
+      }
+
+      .hero-desc .mobile-line{
+        display:block;
+        white-space:nowrap;
+        margin:0;
+      }
+
+      .hero-desc br{
+        display:none;
+      }
+
+      .eyebrow{
+        font-size:7px;
+        margin-bottom:6px;
+      }
+
+      #mobility .intro-copy{
+        font-size:11px;
+        line-height:1.5;
+        white-space:normal;
+      }
+
+      #mobility .intro-copy .intro-mobile-line{
+        display:block;
+        white-space:nowrap;
+      }
+
+      .gallery-copy p{
+        max-width:100%;
+        font-size:12px;
+        line-height:1.36;
+      }
+
+      .gallery-copy p .gallery-mobile-line{
+        display:block;
+        margin:0;
+      }
+
+      .gallery-copy p br{
+        display:none;
+      }
+
+      .gallery-copy p .gallery-mobile-line.is-nowrap{
+        white-space:nowrap;
+      }
+
+      .gallery-copy p .gallery-mobile-line.is-two-line{
+        max-width:none;
+      }
+
+      .slider,
+      .slide{
+        height:auto;
+      }
+
+      .btn{
+        width:100%;
+      }
+
+      .cta-actions{
+        flex-direction:column;
+      }
+
+      .square-logo{
+        width:min(96px, 100%);
+      }
+
+      .qr-box{
+        width:min(118px, 100%);
+      }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="panel hero">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <img src="./images/huv-logo-horizontal-trimmed.png" alt="HUV ロゴ" />
+      </div>
+      <div class="header-right">
+        <a href="#mobility">Mobility</a>
+        <a href="#howto">How To Use</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-image">
+        <video class="hero-video" autoplay muted loop playsinline preload="auto">
+          <source src="./images/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>
+
       <div class="hero-copy">
-        <span class="badge">株式会社NanoAct | 別府エリア宿泊施設向け</span>
-        <h1>宿泊者の移動体験を拡張する<br>特定小型原付シェア導入モデル</h1>
-        <p>NanoActが車体を準備し、ホテル・旅館等に設置。宿泊者はアプリで予約から利用、決済まで完結。宿側のオペレーション負担を抑えつつ、観光導線を伸ばすための導入モデルです。</p>
-      </div>
-      <div class="hero-logo">
-        <img src="./images/nanoact-logo.jpg" alt="株式会社NanoAct ロゴ" />
-      </div>
-    </section>
-
-    <section class="panel section">
-      <p class="kicker">POINT 1</p>
-      <h2>特定小型原付について</h2>
-      <p class="muted">特定小型原動機付自転車は、2023年7月施行の法改正で新設された車両区分です。</p>
-      <div class="grid2">
-        <article class="card">
-          <h3>区分と定義（主な基準）</h3>
-          <ul class="list">
-            <li>定格出力: 0.60kW以下</li>
-            <li>車体寸法: 長さ190cm以下、幅60cm以下</li>
-            <li>最高速度: 20km/h以下（歩道モードは6km/h以下）</li>
-            <li>モーターのみで走行可能（ペダル走行不要）</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>運転ルールと必要手続き</h3>
-          <ul class="list">
-            <li>16歳以上は免許不要（16歳未満は運転禁止）</li>
-            <li>ヘルメット着用は努力義務</li>
-            <li>ナンバープレート装着と自賠責保険加入は必須</li>
-            <li>原則は車道走行、標識等で許可された場所のみ歩道走行可</li>
-            <li>歩道走行時は6km/h以下かつ表示灯点滅が必要</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <p class="kicker">POINT 2</p>
-      <h2>使用車体: glafit NFR-01 Pro</h2>
-      <div class="feature">
-        <div class="image-box">
-          <img src="./images/glafit-bikes.png" alt="glafit NFR-01 Pro 2台の車体画像" />
+        <div>
+          <span class="eyebrow">HUV / Beppu Mobility Experience</span>
+          <h1>
+            Explore More.<br />
+            Move Light.<br />
+            Stay Free.
+          </h1>
+          <p class="hero-desc">
+            <span class="mobile-line">HUVは、旅先での滞在をもっと自由に、もっと心地よくするモビリティ。</span><br />
+            <span class="mobile-line">徒歩では少し遠く、タクシーでは少し近い。</span><br />
+            <span class="mobile-line">そのちょうどいい距離を、自分のペースで、静かに、軽やかに移動できます。</span><br />
+            <span class="mobile-line">ご宿泊先で借りて返せるから、観光も食事も寄り道も、旅の時間がもっと広がります。</span>
+          </p>
         </div>
-        <div class="card">
-          <h3>性能面の強み</h3>
-          <p>別府エリアの坂道環境を想定した運用に組み込みやすく、駅・宿・観光地間の短中距離移動を実装しやすい点が強みです。</p>
-          <div class="specs">
-            <div class="spec"><strong>航続距離</strong>定地走行 46km / JEMPA測定 44km</div>
-            <div class="spec"><strong>モーター出力</strong>0.5kW（500W）</div>
-            <div class="spec"><strong>登坂力</strong>30%</div>
-            <div class="spec"><strong>最高速度</strong>20km/h（歩道モード 6km/h）</div>
-            <div class="spec"><strong>充電時間</strong>約5時間</div>
-            <div class="spec"><strong>車両重量</strong>24kg（バッテリー装着時）</div>
+
+        <div class="hero-bottom">
+          <div class="hero-meta">
+            <div class="meta">
+              <strong>Area</strong>
+              Beppu / Hotel / Local Trip
+            </div>
+            <div class="meta">
+              <strong>Flow</strong>
+              Reserve / Unlock / Pay
+            </div>
+            <div class="meta">
+              <strong>Style</strong>
+              Quiet / Smart / Seamless
+            </div>
           </div>
-          <h3>宿側導入メリット</h3>
-          <ul class="list">
-            <li>周辺観光への送客導線づくりに活用可能</li>
-            <li>宿の差別化と満足度向上に寄与</li>
-            <li>チェックイン時の簡易案内中心で運用開始しやすい</li>
-            <li>NanoAct主導で設置・運用設計できるため調整負荷が小さい</li>
-          </ul>
+
+          <a href="#contact" class="btn btn-dark">Explore</a>
         </div>
       </div>
     </section>
 
-    <section class="panel section">
-      <p class="kicker">POINT 3</p>
-      <h2>運用イメージ（アプリ完結）</h2>
-      <div class="steps">
-        <article class="step"><span class="num">1</span><h3>予約</h3><p>宿泊者がアプリで車体と時間を選択し、利用を確定。</p></article>
-        <article class="step"><span class="num">2</span><h3>ロック/アンロック</h3><p>現地で解錠、返却時に施錠して終了。</p></article>
-        <article class="step"><span class="num">3</span><h3>決済</h3><p>利用料金はアプリ上で完了、履歴データ管理も可能。</p></article>
+    <section class="section wrap" id="mobility">
+      <div class="category-heading">Mobility</div>
+      <div class="category-body">
+        <div class="intro-copy">
+          <span class="intro-mobile-line">HUVで採用するモビリティは、16歳以上なら免許不要で利用できる、</span>
+          <span class="intro-mobile-line">旅先で扱いやすい電動サイクルです。</span>
+        </div>
+        <div class="mobility-grid">
+          <article class="mobility-card">
+            <div class="meta-label">Category / 特定小型原付</div>
+            <div>
+              <h3>新しい近距離移動の選択肢</h3>
+              <p>特定小型原動機付自転車は、一定の基準を満たす電動モビリティの車両区分です。16歳以上は運転免許不要で、車道左側通行を原則に、ルールを守って利用します。</p>
+            </div>
+          </article>
+          <article class="mobility-card">
+            <div class="meta-label">Vehicle / glafit NFR-01 Pro</div>
+            <div>
+              <h3>こがずに進む電動サイクル</h3>
+              <p>NFR-01 Proは、アクセル操作で走れる特定小型原付対応の電動サイクルです。最高速度20km/hの車道走行モードと、6km/hの歩道通行モードに対応しています。</p>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="panel section">
-      <p class="kicker">POINT 4</p>
-      <h2>宿泊施設様へお願いすること</h2>
-      <div class="grid3">
-        <article class="card">
-          <h3>1. 駐輪スペース</h3>
-          <p>車両サイズ（W560 × L1300 × H1080mm）を目安に、屋内または軒下など雨天時に濡れにくい場所での駐輪スペース確保をお願いします。</p>
+    <section class="section wrap" id="howto">
+      <div class="category-heading">How To Use</div>
+      <div class="feature-list">
+        <article class="feature">
+          <div class="feature-num">Step 01</div>
+          <img class="feature-icon" src="./images/howto-app.png" alt="アプリダウンロードのアイコン" />
+          <div>
+            <h3>無料アプリをダウンロードして使用予約</h3>
+            <p>
+              まずは無料アプリをダウンロード。利用前に車両や時間を選び、そのままスマートに予約できます。
+            </p>
+          </div>
         </article>
-        <article class="card">
-          <h3>2. 簡易な充電</h3>
-          <ul class="list">
-            <li>A) 車体に直接充電: 近くに100Vコンセントがあれば給電口へ接続して充電可能</li>
-            <li>B) バッテリー取り外し充電: 鍵で解除し、バッテリー単体で室内充電可能</li>
-            <li>フル充電1回あたり約15〜25円（契約単価で変動）</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>3. 宿泊者への紹介</h3>
-          <p>チェックイン時の一言案内、または事前メール等での簡単な紹介にご協力ください。詳細説明は不要で、運営側が用意する案内文・QRのご案内のみで問題ありません。</p>
-        </article>
-      </div>
-    </section>
 
-    <section class="panel section">
-      <p class="kicker">POINT 5</p>
-      <h2>特定小型原付シェアリングサービス設置のメリット</h2>
-      <div class="benefit-list">
-        <article class="benefit-item">
-          <h3>1) 宿泊体験の価値が上がり、口コミ・満足度につながる</h3>
-          <ul class="list">
-            <li>観光地の移動ストレスを減らせる</li>
-            <li>滞在中の自由度が上がり、満足度・レビュー改善が期待できる</li>
-          </ul>
+        <article class="feature">
+          <div class="feature-num">Step 02</div>
+          <img class="feature-icon" src="./images/howto-unlock.png" alt="開錠のアイコン" />
+          <div>
+            <h3>アプリを通じて開錠</h3>
+            <p>
+              現地ではアプリからそのまま開錠。複雑な手続きなしで、旅の流れを止めずに出発できます。
+            </p>
+          </div>
         </article>
-        <article class="benefit-item">
-          <h3>2) 選ばれる理由になり、差別化できる</h3>
-          <ul class="list">
-            <li>モビリティ導入は比較検討時の分かりやすい付加価値</li>
-            <li>体験型の宿、若年層、インバウンド向けに訴求しやすい</li>
-          </ul>
-        </article>
-        <article class="benefit-item">
-          <h3>3) 追加の館内サービスとして収益機会を作れる</h3>
-          <ul class="list"><li>設置協力施設向けに収益分配設計が可能</li></ul>
-        </article>
-        <article class="benefit-item">
-          <h3>4) 車を動かさない滞在を作れて、運用面のメリットも出る</h3>
-          <ul class="list">
-            <li>駐車場不足・狭路エリアで価値が高い</li>
-            <li>タクシー手配などフロント業務の一部軽減につながる可能性</li>
-          </ul>
-        </article>
-        <article class="benefit-item">
-          <h3>5) 地域回遊の促進で、地域連携の打ち手になる</h3>
-          <ul class="list">
-            <li>近隣の飲食・観光施設への回遊増で体験価値向上に貢献</li>
-            <li>観光関連団体との取り組みとしてPRしやすい</li>
-          </ul>
+
+        <article class="feature">
+          <div class="feature-num">Step 03</div>
+          <img class="feature-icon" src="./images/howto-payment.png" alt="決済のアイコン" />
+          <div>
+            <h3>決済もアプリで完結</h3>
+            <p>
+              利用終了後の決済もアプリ上で完結。返却後までスムーズで、観光中のストレスを最小限に抑えられます。
+            </p>
+          </div>
         </article>
       </div>
     </section>
 
-    <section class="panel footer">
-      <strong>お問い合わせ・導入のご相談はこちら</strong><br>
-      株式会社NanoAct 別府エリア導入担当: 櫻井（サクライ）<br>
-      メール: <a href="mailto:sakurai@nanoact.jp">sakurai@nanoact.jp</a><br>
-      お問い合わせフォーム（1分）:
-      <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=tXXefBLjeEmMcUNczENLjFiwHE9kCUhPi9AHtulHIeRUMUdSVEJWMzI0UFpCNkZER0JJOTZRQkQyTi4u" target="_blank" rel="noopener noreferrer">こちら</a>
+    <section class="section wrap" id="gallery">
+      <div class="category-heading">Gallery</div>
+      <div class="gallery-grid">
+        <div class="gallery-copy">
+          <div>
+            <span class="eyebrow">Gallery / Auto Slide</span>
+            <h2>
+              移動が変わると、<br />滞在も変わる。
+            </h2>
+            <p>
+              <span class="gallery-mobile-line is-nowrap">坂の多い別府でも、HUVなら移動はもっとスムーズに。</span><br />
+              <span class="gallery-mobile-line is-two-line">体力を使いすぎず、行きたい場所へ気軽に立ち寄れるから、旅の選択肢が自然と増えていきます。</span><br />
+              <span class="gallery-mobile-line is-nowrap">寄り道まで楽しめる、新しい滞在のかたちです。</span>
+            </p>
+          </div>
+
+          <div class="gallery-index" id="galleryIndex">01 / 03</div>
+        </div>
+
+        <div>
+          <div class="slider">
+            <div class="slider-track" id="sliderTrack">
+              <div class="slide s1" aria-label="HUVで街を走る利用イメージ"></div>
+              <div class="slide s2" aria-label="HUVとカフェで過ごす利用イメージ"></div>
+              <div class="slide s3" aria-label="海辺に並ぶHUV車両のイメージ"></div>
+            </div>
+          </div>
+
+          <div class="slider-nav">
+            <div class="nav-seg active" data-index="0">01</div>
+            <div class="nav-seg" data-index="1">02</div>
+            <div class="nav-seg" data-index="2">03</div>
+          </div>
+        </div>
+      </div>
     </section>
+
+    <div class="section-spacer wrap" aria-hidden="true"></div>
+
+    <section class="section wrap" id="contact">
+      <div class="category-heading">Contact</div>
+      <div class="cta-panel">
+        <div class="cta-main">
+          <div class="bottom-grid">
+            <div class="bottom-left">
+              <img class="square-logo" src="./images/huv-logo-square-trimmed.png" alt="HUV 正方形ロゴ" />
+              <div class="cta-actions">
+                <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=tXXefBLjeEmMcUNczENLjFiwHE9kCUhPi9AHtulHIeRURFgySlZEM05XRko0MTFQUkUzUzdZNUwxWi4u" target="_blank" rel="noopener noreferrer" class="btn btn-dark">Contact</a>
+                <a href="https://ysakurai390.github.io/HUV_user-guide/" target="_blank" rel="noopener noreferrer" class="btn">User Guide</a>
+              </div>
+            </div>
+
+            <div class="bottom-right">
+              <div class="qr-card">
+                <div class="qr-label">Download Here / iOS</div>
+                <div class="qr-box has-image"><img src="./images/glafit-ios-qr.png" alt="iOSアプリダウンロード用QRコード" /></div>
+                <p>iPhoneをご利用の方は<a href="https://apps.apple.com/jp/app/glafit/id6480165798" target="_blank" rel="noopener noreferrer">こちら</a></p>
+              </div>
+              <div class="qr-card">
+                <div class="qr-label">Download Here / Android</div>
+                <div class="qr-box has-image"><img src="./images/glafit-google-qr.png" alt="Androidアプリダウンロード用QRコード" /></div>
+                <p>Androidをご利用の方は<a href="https://play.google.com/store/apps/details?id=com.glafit.app" target="_blank" rel="noopener noreferrer">こちら</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="cta-side">
+          <div class="label">Company Information</div>
+          <div class="info">
+            <div class="info-row"><strong>会社名</strong><span>株式会社NanoAct（ナノアクト）</span></div>
+            <div class="info-row"><strong>所在地</strong><span>〒870-0021<br />大分県大分市府内町3-4-20<br />大分恒和ビル４階</span></div>
+            <div class="info-row"><strong>TEL</strong><span>052-898-2905</span></div>
+            <div class="info-row"><strong>FAX</strong><span>052-856-3221</span></div>
+            <div class="info-row"><strong>MAIL</strong><span>info@nanoact.jp</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <footer class="footer wrap">
+      <span>© 2026 HUV</span>
+      <span>Powered by Wanderide</span>
+    </footer>
   </main>
+
+  <script>
+    (function(){
+      const track = document.getElementById('sliderTrack');
+      const navs = document.querySelectorAll('.nav-seg');
+      const indexText = document.getElementById('galleryIndex');
+      const total = 3;
+      let current = 0;
+      let timer;
+
+      function render(){
+        track.style.transform = `translateX(-${current * 100}%)`;
+        navs.forEach((el, i) => {
+          el.classList.toggle('active', i === current);
+        });
+        indexText.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      }
+
+      function go(index){
+        current = index;
+        render();
+      }
+
+      function next(){
+        current = (current + 1) % total;
+        render();
+      }
+
+      function start(){
+        timer = setInterval(next, 3500);
+      }
+
+      function reset(){
+        clearInterval(timer);
+        start();
+      }
+
+      navs.forEach((el) => {
+        el.addEventListener('click', () => {
+          go(Number(el.dataset.index));
+          reset();
+        });
+      });
+
+      render();
+      start();
+    })();
+  </script>
 </body>
 </html>
