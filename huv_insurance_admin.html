@@ -19,6 +19,7 @@
 
       <div class="header-actions">
         <a class="btn btn-soft" href="./huv_insurance_portal.html">閲覧ページへ</a>
+        <button class="btn btn-dark hidden" type="button" data-logout-button>ログアウト</button>
       </div>
     </div>
   </header>
@@ -39,7 +40,32 @@
         <div class="section-grid">
           <div class="section-label">Admin Console</div>
           <div class="section-body">
-            <div class="admin-main" data-secure-area>
+            <section class="admin-card" data-login-panel>
+              <div class="card-head">
+                <div>
+                  <h3>管理者ログイン</h3>
+                  <p>Supabase Authenticationで管理者のみ操作できます。</p>
+                </div>
+              </div>
+              <div class="admin-card-body">
+                <form class="form-stack" data-login-form>
+                  <div class="control">
+                    <label>メールアドレス</label>
+                    <input class="input" type="email" autocomplete="username" data-login-email />
+                  </div>
+                  <div class="control">
+                    <label>パスワード</label>
+                    <input class="input" type="password" autocomplete="current-password" data-login-password />
+                  </div>
+                  <div class="action-row">
+                    <button class="btn btn-dark" type="submit">ログイン</button>
+                  </div>
+                </form>
+                <div class="login-status" data-login-status>管理者アカウントでログインすると、施設と車両の編集ができます。</div>
+              </div>
+            </section>
+
+            <div class="admin-main hidden" data-secure-area>
                 <section class="admin-card">
                   <div class="card-head">
                     <div>
@@ -49,23 +75,26 @@
                     <span class="pill">Step 1</span>
                   </div>
                   <div class="admin-card-body">
-                    <div class="inline-grid">
-                      <div class="control">
-                        <label>施設名</label>
-                        <input class="input" type="text" placeholder="例: 別府公園前" data-facility-name-input />
+                    <form class="form-stack" data-add-facility-form>
+                      <div class="inline-grid">
+                        <div class="control">
+                          <label>施設名</label>
+                          <input class="input" type="text" placeholder="例: 別府公園前" data-facility-name-input />
+                        </div>
+                        <div class="control">
+                          <label>エリア</label>
+                          <input class="input" type="text" placeholder="例: 別府市公園前" data-facility-area-input />
+                        </div>
                       </div>
                       <div class="control">
-                        <label>エリア</label>
-                        <input class="input" type="text" placeholder="例: 別府市公園前" data-facility-area-input />
+                        <label>運用担当メモ</label>
+                        <textarea class="textarea" placeholder="現地窓口、保険差し替え時の注意事項など" data-facility-manager-input></textarea>
                       </div>
-                    </div>
-                    <div class="control" style="margin-top:12px;">
-                      <label>運用担当メモ</label>
-                      <textarea class="textarea" placeholder="現地窓口、保険差し替え時の注意事項など" data-facility-manager-input></textarea>
-                    </div>
-                    <div style="margin-top:12px;">
-                      <button class="btn" type="button" data-add-facility-button>施設を登録</button>
-                    </div>
+                      <div class="action-row">
+                        <button class="btn" type="submit" data-add-facility-button>施設を登録</button>
+                      </div>
+                      <div class="login-status" data-facility-form-status>施設情報を入力して登録できます。</div>
+                    </form>
                   </div>
                 </section>
 
@@ -78,60 +107,30 @@
                     <span class="pill">Step 2</span>
                   </div>
                   <div class="admin-card-body">
-                    <div class="inline-grid">
-                      <div class="control">
-                        <label>施設</label>
-                        <select class="select" data-admin-vehicle-facility></select>
+                    <form class="form-stack" data-add-vehicle-form>
+                      <div class="inline-grid">
+                        <div class="control">
+                          <label>施設</label>
+                          <select class="select" data-admin-vehicle-facility></select>
+                        </div>
+                        <div class="control">
+                          <label>ナンバー</label>
+                          <input class="input" type="text" placeholder="例: 別府市 145" data-vehicle-plate-input />
+                        </div>
+                        <div class="control">
+                          <label>有効期限</label>
+                          <input class="input" type="date" data-vehicle-expiry-input />
+                        </div>
+                        <div class="control">
+                          <label>自賠責保険のアップロード</label>
+                          <input class="input" type="file" accept="application/pdf" data-vehicle-file-input />
+                        </div>
                       </div>
-                      <div class="control">
-                        <label>ナンバー</label>
-                        <input class="input" type="text" placeholder="例: 別府市 145" data-vehicle-plate-input />
+                      <div class="action-row">
+                        <button class="btn" type="submit" data-add-vehicle-button>車両を登録</button>
                       </div>
-                      <div class="control">
-                        <label>有効期限</label>
-                        <input class="input" type="date" data-vehicle-expiry-input />
-                      </div>
-                      <div class="control">
-                        <label>自賠責保険のアップロード</label>
-                        <input class="input" type="file" accept="application/pdf" data-vehicle-file-input />
-                      </div>
-                    </div>
-                    <div style="margin-top:12px;">
-                      <button class="btn" type="button" data-add-vehicle-button>車両を登録</button>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="admin-card">
-                  <div class="card-head">
-                    <div>
-                      <h3>パスワード設定</h3>
-                      <p>管理者用パスワードを変更</p>
-                    </div>
-                    <span class="pill">Step 3</span>
-                  </div>
-                  <div class="admin-card-body">
-                    <div class="inline-grid">
-                      <div class="control">
-                        <label>現在のパスワード</label>
-                        <input class="input" type="password" data-current-password-input />
-                      </div>
-                      <div class="control">
-                        <label>新しいパスワード</label>
-                        <input class="input" type="password" data-new-password-input />
-                      </div>
-                      <div class="control">
-                        <label>新しいパスワード（確認）</label>
-                        <input class="input" type="password" data-confirm-password-input />
-                      </div>
-                    </div>
-
-                    <div style="margin-top:12px;">
-                      <button class="btn btn-dark" type="button" data-password-update-button>パスワードを更新</button>
-                    </div>
-                    <div class="login-status" style="margin-top:12px;" data-password-status>
-                      現在の管理者パスワードで確認後、新しいパスワードへ変更できます。
-                    </div>
+                      <div class="login-status" data-vehicle-form-status>施設を選び、車両情報と自賠責保険PDFを登録できます。</div>
+                    </form>
                   </div>
                 </section>
 
@@ -180,6 +179,39 @@
                       </thead>
                       <tbody data-admin-table></tbody>
                     </table>
+                  </div>
+                </section>
+
+                <section class="admin-card">
+                  <div class="card-head">
+                    <div>
+                      <h3>パスワード設定</h3>
+                      <p>管理者用パスワードを変更</p>
+                    </div>
+                    <span class="pill">Step 3</span>
+                  </div>
+                  <div class="admin-card-body">
+                    <div class="inline-grid">
+                      <div class="control">
+                        <label>現在のパスワード</label>
+                        <input class="input" type="password" autocomplete="current-password" data-current-password-input />
+                      </div>
+                      <div class="control">
+                        <label>新しいパスワード</label>
+                        <input class="input" type="password" autocomplete="new-password" data-new-password-input />
+                      </div>
+                      <div class="control">
+                        <label>新しいパスワード（確認）</label>
+                        <input class="input" type="password" autocomplete="new-password" data-confirm-password-input />
+                      </div>
+                    </div>
+
+                    <div style="margin-top:12px;">
+                      <button class="btn btn-dark" type="button" data-password-update-button>パスワードを更新</button>
+                    </div>
+                    <div class="login-status" style="margin-top:12px;" data-password-status>
+                      現在の管理者パスワードで確認後、新しいパスワードへ変更できます。
+                    </div>
                   </div>
                 </section>
             </div>
@@ -247,6 +279,7 @@
     </div>
   </div>
 
-  <script src="./scripts/huv-insurance-demo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./scripts/huv-insurance-demo.js?v=rest-v2"></script>
 </body>
 </html>
