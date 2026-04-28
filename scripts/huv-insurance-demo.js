@@ -1,7 +1,7 @@
 const SUPABASE_URL = "https://pdmuwacdoodhcmkiufkc.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkbXV3YWNkb29kaGNta2l1ZmtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MjM5NjAsImV4cCI6MjA5MjE5OTk2MH0.efOMCfzIpEgb-sPvsh-dhdrHfeiO4vkxuHokArhxFdk";
 const STORAGE_BUCKET = "insurance-pdfs";
-const APP_VERSION = "rest-v3-dashboard";
+const APP_VERSION = "rest-v4-dashboard-auth-read";
 const USAGE_RATE_PER_MINUTE = 25;
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -158,8 +158,10 @@ async function loadFacilitiesAndVehicles(){
   }));
 }
 
-async function loadUsageRecords(){
-  return await restRequest("/rest/v1/huv_usage_records?select=*&order=usage_date.desc,start_time.desc");
+async function loadUsageRecords(token){
+  return await restRequest("/rest/v1/huv_usage_records?select=*&order=usage_date.desc,start_time.desc", {
+    token
+  });
 }
 
 function buildPortalPage(){
@@ -568,7 +570,7 @@ function buildAdminPage(){
     facilities = await loadFacilitiesAndVehicles();
     usageTableAvailable = true;
     try {
-      usageRecords = await loadUsageRecords();
+      usageRecords = await loadUsageRecords(session?.access_token);
     } catch (error) {
       console.error(error);
       usageTableAvailable = false;
