@@ -19,11 +19,31 @@ create table if not exists public.vehicles (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.huv_usage_records (
+  id uuid primary key default gen_random_uuid(),
+  vehicle_id uuid not null references public.vehicles(id) on delete cascade,
+  record_type text not null default 'reservation'
+    check (record_type in ('reservation', 'history')),
+  usage_date date not null,
+  start_time time not null,
+  end_time time not null,
+  sales_amount numeric(12, 0) not null default 0,
+  maintenance_date date,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 create unique index if not exists vehicles_plate_number_key
   on public.vehicles (plate_number);
 
 create index if not exists vehicles_facility_id_idx
   on public.vehicles (facility_id);
+
+create index if not exists huv_usage_records_vehicle_id_idx
+  on public.huv_usage_records (vehicle_id);
+
+create index if not exists huv_usage_records_usage_date_idx
+  on public.huv_usage_records (usage_date desc);
 
 create or replace function public.set_updated_at()
 returns trigger
@@ -47,8 +67,15 @@ before update on public.vehicles
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists huv_usage_records_set_updated_at on public.huv_usage_records;
+create trigger huv_usage_records_set_updated_at
+before update on public.huv_usage_records
+for each row
+execute function public.set_updated_at();
+
 alter table public.facilities enable row level security;
 alter table public.vehicles enable row level security;
+alter table public.huv_usage_records enable row level security;
 
 drop policy if exists "public can read facilities" on public.facilities;
 create policy "public can read facilities"
@@ -62,6 +89,14 @@ create policy "public can read vehicles"
 on public.vehicles
 for select
 to anon, authenticated
+using (true);
+
+drop policy if exists "public can read huv usage records" on public.huv_usage_records;
+drop policy if exists "authenticated can read huv usage records" on public.huv_usage_records;
+create policy "authenticated can read huv usage records"
+on public.huv_usage_records
+for select
+to authenticated
 using (true);
 
 drop policy if exists "authenticated can insert facilities" on public.facilities;
@@ -104,6 +139,28 @@ with check (true);
 drop policy if exists "authenticated can delete vehicles" on public.vehicles;
 create policy "authenticated can delete vehicles"
 on public.vehicles
+for delete
+to authenticated
+using (true);
+
+drop policy if exists "authenticated can insert huv usage records" on public.huv_usage_records;
+create policy "authenticated can insert huv usage records"
+on public.huv_usage_records
+for insert
+to authenticated
+with check (true);
+
+drop policy if exists "authenticated can update huv usage records" on public.huv_usage_records;
+create policy "authenticated can update huv usage records"
+on public.huv_usage_records
+for update
+to authenticated
+using (true)
+with check (true);
+
+drop policy if exists "authenticated can delete huv usage records" on public.huv_usage_records;
+create policy "authenticated can delete huv usage records"
+on public.huv_usage_records
 for delete
 to authenticated
 using (true);

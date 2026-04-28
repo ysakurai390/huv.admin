@@ -26,19 +26,14 @@
 
   <main class="main">
     <div class="wrap">
-      <section class="hero">
-        <div class="hero-inner">
-          <div class="hero-copy">
-            <div>
-              <h1>Admin Control</h1>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="section">
         <div class="section-grid">
-          <div class="section-label">Admin Console</div>
+          <div class="section-label">
+            <div class="admin-tabs hidden" aria-label="管理画面切り替え" data-secure-nav>
+              <button class="tab-button is-active" type="button" data-admin-view-button="dashboard">Dashboard</button>
+              <button class="tab-button" type="button" data-admin-view-button="console">Admin Console</button>
+            </div>
+          </div>
           <div class="section-body">
             <section class="admin-card" data-login-panel>
               <div class="card-head">
@@ -66,6 +61,48 @@
             </section>
 
             <div class="admin-main hidden" data-secure-area>
+                <div data-admin-view="dashboard">
+                  <section class="admin-card">
+                    <div class="card-head">
+                      <div>
+                        <h3>HUV Dashboard</h3>
+                        <p>登録済み車両に対して予約・利用履歴・売上を手動管理</p>
+                      </div>
+                      <div class="action-row">
+                        <button class="btn" type="button" data-usage-add-button>レコードを追加</button>
+                        <button class="btn btn-soft" type="button" data-usage-csv-button>CSVダウンロード</button>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="admin-card">
+                    <div class="card-head">
+                      <div>
+                        <h3>予約・利用履歴</h3>
+                        <p>行を押すと内容を編集できます。</p>
+                      </div>
+                      <select class="select compact-select" data-usage-filter></select>
+                    </div>
+                    <div class="admin-card-body" style="padding:0;">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>種別</th>
+                            <th>施設名</th>
+                            <th>ナンバー</th>
+                            <th>利用日</th>
+                            <th>利用開始</th>
+                            <th>利用終了</th>
+                            <th>売上</th>
+                          </tr>
+                        </thead>
+                        <tbody data-usage-table></tbody>
+                      </table>
+                    </div>
+                  </section>
+                </div>
+
+                <div class="hidden" data-admin-view="console">
                 <section class="admin-card">
                   <div class="card-head">
                     <div>
@@ -214,6 +251,7 @@
                     </div>
                   </div>
                 </section>
+                </div>
             </div>
           </div>
         </div>
@@ -275,11 +313,45 @@
             <button class="btn btn-dark" type="submit">保存</button>
           </div>
         </form>
+
+        <form class="form-stack hidden" data-usage-form>
+          <div class="control">
+            <label>施設</label>
+            <select class="select" data-usage-facility></select>
+          </div>
+          <div class="control">
+            <label>ナンバー</label>
+            <select class="select" data-usage-vehicle></select>
+          </div>
+          <div class="inline-grid">
+            <div class="control">
+              <label>利用日</label>
+              <input class="input" type="date" data-usage-date />
+            </div>
+            <div class="control">
+              <label>利用開始</label>
+              <input class="input" type="time" data-usage-start />
+            </div>
+            <div class="control">
+              <label>利用終了</label>
+              <input class="input" type="time" data-usage-end />
+            </div>
+            <div class="control">
+              <label>売上</label>
+              <input class="input" type="text" readonly data-usage-sales />
+            </div>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-dark" type="submit" data-usage-submit>保存</button>
+            <button class="btn-mini btn-danger hidden" type="button" data-usage-delete-button>削除</button>
+          </div>
+          <div class="login-status" data-usage-form-status>利用時間から25円/分で売上が自動計算されます。</div>
+        </form>
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./scripts/huv-insurance-demo.js?v=rest-v2"></script>
+  <script src="./scripts/huv-insurance-demo.js?v=rest-v3-dashboard"></script>
 </body>
 </html>

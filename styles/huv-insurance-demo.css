@@ -598,6 +598,36 @@ textarea{
   gap:18px;
 }
 
+.admin-tabs{
+  display:grid;
+  gap:8px;
+}
+
+.tab-button{
+  width:100%;
+  min-height:42px;
+  padding:0 15px;
+  border:1px solid var(--line-dark);
+  background:#fff;
+  color:var(--ink);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.tab-button.is-active{
+  background:var(--ink);
+  border-color:var(--ink);
+  color:#fff;
+}
+
+[data-admin-view]{
+  display:grid;
+  gap:18px;
+}
+
 .admin-card{
   border:1px solid var(--line);
   background:#fff;
@@ -611,6 +641,10 @@ textarea{
   display:grid;
   grid-template-columns:repeat(2, minmax(0, 1fr));
   gap:12px;
+}
+
+.compact-select{
+  max-width:240px;
 }
 
 .table{
@@ -633,6 +667,14 @@ textarea{
   letter-spacing:.16em;
   color:var(--sub);
   background:var(--paper);
+}
+
+.clickable-row{
+  cursor:pointer;
+}
+
+.clickable-row:hover{
+  background:var(--paper-strong);
 }
 
 .muted{
